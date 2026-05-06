@@ -1,0 +1,143 @@
+name: Weekly CS Study Reminder
+
+on:
+  schedule:
+    # 매주 월요일 09:00 KST = 일요일 00:00 UTC
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+    inputs:
+      week:
+        description: '강제로 실행할 주차 번호 (비우면 자동 계산)'
+        required: false
+
+permissions:
+  contents: write    # members/ 변경사항 push 에 필요
+
+jobs:
+  notify-and-scaffold:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 1) 이번 주차 계산
+      - name: Calculate current week
+        id: week
+        run: |
+          if [ -n "${{ github.event.inputs.week }}" ]; then
+            WEEK_INT="${{ github.event.inputs.week }}"
+          else
+            START_TS=$(date -d "${{ secrets.STUDY_START_DATE }}" +%s)
+            NOW_TS=$(date +%s)
+            WEEK_INT=$(( (NOW_TS - START_TS) / 604800 + 1 ))
+          fi
+          WEEK_PADDED=$(printf "%02d" $WEEK_INT)
+          echo "int=$WEEK_INT"        >> $GITHUB_OUTPUT
+          echo "padded=$WEEK_PADDED"  >> $GITHUB_OUTPUT
+          echo "📅 Week $WEEK_PADDED"
+
+      # 2) curriculum.json 에서 메타 추출
+      - name: Load week metadata
+        id: meta
+        run: |
+          WEEK_INT="${{ steps.week.outputs.int }}"
+          DATA=$(jq --argjson w "$WEEK_INT" '.weeks[] | select(.week == $w)' curriculum.json)
+          if [ -z "$DATA" ] || [ "$DATA" = "null" ]; then
+            echo "❌ curriculum.json 에 Week $WEEK_INT 항목 없음"
+            exit 1
+          fi
+          echo "slug=$(echo "$DATA"  | jq -r '.slug')"   >> $GITHUB_OUTPUT
+          echo "topic=$(echo "$DATA" | jq -r '.topic')"  >> $GITHUB_OUTPUT
+          echo "phase=$(echo "$DATA" | jq -r '.phase')"  >> $GITHUB_OUTPUT
+          # keywords / goals 는 별도 파일로 (개행 처리 안전)
+          echo "$DATA" | jq -r '.keywords | join(", ")'              > /tmp/keywords.txt
+          echo "$DATA" | jq -r '.goals | map("• " + .) | join("\n")' > /tmp/goals.txt
+          echo "📌 $(echo "$DATA" | jq -r '.topic')"
+
+      # 3) Discord 페이로드 조립 + 전송
+      - name: Build & send Discord notification
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          WEEK_INT="${{ steps.week.outputs.int }}"
+          WEEK_PAD="${{ steps.week.outputs.padded }}"
+          SLUG="${{ steps.meta.outputs.slug }}"
+          TOPIC="${{ steps.meta.outputs.topic }}"
+          PHASE="${{ steps.meta.outputs.phase }}"
+          KEYWORDS=$(cat /tmp/keywords.txt)
+          GOALS=$(cat /tmp/goals.txt)
+
+          # Phase 별 색상 매핑
+          case "$PHASE" in
+            network)  COLOR=5814783 ;;   # 파랑
+            os)       COLOR=5763719 ;;   # 초록
+            database) COLOR=10181046 ;;  # 보라
+            *)        COLOR=0 ;;
+          esac
+
+          # 발표자 자동 로테이션 (members.json 순환)
+          MEMBER_COUNT=$(jq '.members | length' members.json)
+          PRESENTER_IDX=$(( (WEEK_INT - 1) % MEMBER_COUNT ))
+          PRESENTER_NAME=$(jq -r ".members[$PRESENTER_IDX].name" members.json)
+
+          # 주차 README URL
+          README_URL="https://github.com/${{ github.repository }}/blob/main/$PHASE/week${WEEK_PAD}-${SLUG}/README.md"
+
+          # 페이로드 빌드 (jq 필터 사용)
+          jq -n -f templates/discord-embed.jq \
+             --arg week_num "$WEEK_PAD" \
+             --arg week_num_raw "$WEEK_INT" \
+             --arg topic "$TOPIC" \
+             --arg slug "$SLUG" \
+             --arg keywords "$KEYWORDS" \
+             --arg goals "$GOALS" \
+             --arg presenter "@$PRESENTER_NAME" \
+             --arg readme_url "$README_URL" \
+             --argjson color $COLOR \
+             > /tmp/payload.json
+
+          echo "📤 Sending payload:"
+          jq . /tmp/payload.json
+
+          # Discord 전송
+          curl -fsS -X POST -H "Content-Type: application/json" \
+               -d @/tmp/payload.json \
+               "$WEBHOOK"
+
+      # 4) 멤버별 노트 파일 scaffold (이미 있으면 스킵)
+      - name: Scaffold note files
+        run: |
+          WEEK_PAD="${{ steps.week.outputs.padded }}"
+          SLUG="${{ steps.meta.outputs.slug }}"
+          TOPIC="${{ steps.meta.outputs.topic }}"
+
+          jq -r '.members[] | "\(.id)\t\(.name)"' members.json | \
+          while IFS=$'\t' read -r MEMBER_ID MEMBER_NAME; do
+            DIR="members/$MEMBER_ID"
+            FILE="$DIR/week${WEEK_PAD}-${SLUG}.md"
+
+            mkdir -p "$DIR"
+            if [ -f "$FILE" ]; then
+              echo "⏭️  $FILE 이미 존재, 스킵"
+              continue
+            fi
+
+            sed -e "s|{{WEEK_NUM}}|$WEEK_PAD|g" \
+                -e "s|{{TOPIC}}|$TOPIC|g" \
+                -e "s|{{MEMBER_ID}}|$MEMBER_ID|g" \
+                -e "s|{{MEMBER_NAME}}|$MEMBER_NAME|g" \
+                members/template.md > "$FILE"
+            echo "✅ Created $FILE"
+          done
+
+      # 5) 변경사항 커밋 + 푸시
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add members/
+          if git diff --cached --quiet; then
+            echo "변경사항 없음"
+          else
+            git commit -m "chore: scaffold week ${{ steps.week.outputs.padded }} note files"
+            git push
+          fi
