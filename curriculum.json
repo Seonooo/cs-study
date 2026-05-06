@@ -1,0 +1,236 @@
+{
+  "weeks": [
+    {
+      "week": 1,
+      "slug": "osi-tcpip",
+      "phase": "network",
+      "topic": "OSI/TCP-IP 계층 모델",
+      "keywords": [
+        "OSI 7계층 vs TCP/IP 4계층",
+        "캡슐화",
+        "L4/L7 로드밸런서",
+        "HTTP/3"
+      ],
+      "goals": [
+        "두 모델이 왜 다르게 나뉘었는지 설명",
+        "\"URL 입력 시 일어나는 일\" 7계층 관점",
+        "L4/L7 로드밸런서 차이",
+        "HTTP/3가 UDP 위인 이유"
+      ]
+    },
+    {
+      "week": 2,
+      "slug": "tcp-udp",
+      "phase": "network",
+      "topic": "TCP, UDP",
+      "keywords": [
+        "3·4-way handshake",
+        "TIME_WAIT",
+        "흐름·혼잡 제어 (BBR)",
+        "Connection Pool"
+      ],
+      "goals": [
+        "3-way / 4-way handshake 동작과 왜 그 횟수인지",
+        "TIME_WAIT 발생 원인과 해결책",
+        "TCP vs UDP 선택 기준",
+        "Connection Pool / Keepalive 의 역할"
+      ]
+    },
+    {
+      "week": 3,
+      "slug": "http-https",
+      "phase": "network",
+      "topic": "HTTP / HTTPS",
+      "keywords": [
+        "HTTP/1.1 vs 2 vs 3",
+        "TLS 1.3 핸드셰이크",
+        "안전성·멱등성",
+        "CORS preflight",
+        "HTTP 캐싱"
+      ],
+      "goals": [
+        "HTTP 진화에서 각 버전이 해결한 문제",
+        "TLS 1.3 RTT 감소 메커니즘",
+        "POST를 멱등하게 만드는 패턴",
+        "CORS preflight 발생 조건",
+        "Cache-Control / ETag / Last-Modified 차이"
+      ]
+    },
+    {
+      "week": 4,
+      "slug": "dns-lb-cdn",
+      "phase": "network",
+      "topic": "DNS, 로드밸런싱, CDN",
+      "keywords": [
+        "DNS recursive / iterative",
+        "TTL 마이그레이션 전략",
+        "Sticky session",
+        "Anycast",
+        "Origin Shield"
+      ],
+      "goals": [
+        "DNS 조회 흐름 설명",
+        "TTL 트레이드오프와 마이그레이션 패턴",
+        "Sticky vs Stateless 결정",
+        "Anycast 라우팅 원리",
+        "CDN 캐시 전략 (origin shield, stale-while-revalidate)"
+      ]
+    },
+    {
+      "week": 5,
+      "slug": "process-thread",
+      "phase": "os",
+      "topic": "프로세스와 스레드",
+      "keywords": [
+        "PCB / 컨텍스트 스위칭",
+        "Goroutine M:N",
+        "Java Virtual Thread",
+        "동시성 vs 병렬성"
+      ],
+      "goals": [
+        "프로세스 vs 스레드 자원 공유 관점",
+        "컨텍스트 스위칭 비용 구성",
+        "멀티프로세스 / 멀티스레드 / 비동기 I/O 선택",
+        "코루틴·가상스레드 효율 원리"
+      ]
+    },
+    {
+      "week": 6,
+      "slug": "sync-deadlock",
+      "phase": "os",
+      "topic": "동기화와 데드락",
+      "keywords": [
+        "데드락 4 조건",
+        "Mutex / Semaphore / Monitor",
+        "synchronized vs ReentrantLock",
+        "CAS / ABA",
+        "MVCC / Actor / Immutable"
+      ],
+      "goals": [
+        "데드락 4 조건과 회피 방법",
+        "Mutex / Semaphore / Monitor 사용 시점",
+        "synchronized vs ReentrantLock 선택",
+        "CAS와 ABA 문제 해결",
+        "락 없는 동시성 패러다임 비교"
+      ]
+    },
+    {
+      "week": 7,
+      "slug": "memory",
+      "phase": "os",
+      "topic": "메모리 관리",
+      "keywords": [
+        "가상 메모리 / 페이징",
+        "TLB miss / Page Fault",
+        "캐시 친화적 코드",
+        "mmap",
+        "ZGC / Shenandoah"
+      ],
+      "goals": [
+        "가상 메모리 목적과 페이징 동작",
+        "TLB miss vs Page Fault 비용 계층",
+        "캐시 친화적 코드 작성 원칙",
+        "mmap 적용 사례",
+        "GC 진화 (G1 → ZGC)"
+      ]
+    },
+    {
+      "week": 8,
+      "slug": "filesystem-io",
+      "phase": "os",
+      "topic": "파일 시스템과 I/O",
+      "keywords": [
+        "sync/async vs blocking/non-blocking",
+        "select / poll / epoll",
+        "ET vs LT",
+        "io_uring",
+        "Node.js Event Loop"
+      ],
+      "goals": [
+        "sync/async와 blocking/non-blocking 구분",
+        "epoll 효율의 비밀",
+        "ET / LT 차이와 선택",
+        "io_uring 등장 배경",
+        "Node.js 단일 스레드 처리량"
+      ]
+    },
+    {
+      "week": 9,
+      "slug": "relational-normalization",
+      "phase": "database",
+      "topic": "관계형 모델과 정규화",
+      "keywords": [
+        "1NF ~ BCNF",
+        "함수 종속성",
+        "OLTP vs OLAP",
+        "UUID v7 / Snowflake ID"
+      ],
+      "goals": [
+        "정규화 단계와 방지하는 이상 현상",
+        "함수 종속성 분석",
+        "OLTP / OLAP별 정규화 정책",
+        "분산 환경 키 전략 선택"
+      ]
+    },
+    {
+      "week": 10,
+      "slug": "index-query",
+      "phase": "database",
+      "topic": "인덱스와 쿼리 최적화",
+      "keywords": [
+        "B-Tree vs B+Tree",
+        "Clustered / Non-clustered",
+        "복합 인덱스",
+        "커버링 인덱스",
+        "EXPLAIN"
+      ],
+      "goals": [
+        "DB가 B+Tree를 쓰는 이유",
+        "InnoDB PK 설계 가이드",
+        "복합 인덱스 컬럼 순서 결정",
+        "커버링 인덱스로 쿼리 최적화",
+        "EXPLAIN으로 인덱스 미사용 진단"
+      ]
+    },
+    {
+      "week": 11,
+      "slug": "transaction-isolation",
+      "phase": "database",
+      "topic": "트랜잭션과 격리 수준",
+      "keywords": [
+        "ACID",
+        "격리 수준 4단계",
+        "MVCC vs 락 기반",
+        "Gap Lock vs Snapshot Isolation",
+        "Write Skew / SSI"
+      ],
+      "goals": [
+        "ACID 각 속성의 의미",
+        "격리 수준과 이상 현상 매핑",
+        "MVCC 동작 원리",
+        "MySQL InnoDB vs PostgreSQL Repeatable Read",
+        "Write Skew와 SSI"
+      ]
+    },
+    {
+      "week": 12,
+      "slug": "nosql-distributed",
+      "phase": "database",
+      "topic": "NoSQL, 분산 데이터베이스",
+      "keywords": [
+        "CAP / PACELC",
+        "NoSQL 4종",
+        "단일/다중/리더리스 복제",
+        "Quorum / Vector clock",
+        "Saga / Outbox"
+      ],
+      "goals": [
+        "CAP과 PACELC로 시스템 분류",
+        "NoSQL 종류별 사용 사례",
+        "복제 방식 트레이드오프",
+        "Eventual Consistency와 Quorum",
+        "Saga 패턴과 Outbox"
+      ]
+    }
+  ]
+}
