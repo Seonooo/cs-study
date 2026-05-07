@@ -2,8 +2,8 @@ name: Weekly CS Study Reminder
 
 on:
   schedule:
-    # 매주 월요일 09:00 KST = 일요일 00:00 UTC
-    - cron: '0 0 * * 1'
+    # 매주 토요일 09:00 KST = 토요일 00:00 UTC
+    - cron: '0 0 * * 6'
   workflow_dispatch:
     inputs:
       week:
