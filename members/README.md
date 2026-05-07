@@ -6,9 +6,9 @@
 
 ## 멤버 목록
 
-- [member1](member1/)
-- [member2](member2/)
-- [member3](member3/)
+- [seonho](seonho/)
+- [wooseung](wooseung/)
+- [wodud](wodud/)
 
 ---
 

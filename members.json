@@ -1,7 +1,7 @@
 {
   "members": [
-    { "id": "member1", "name": "이름1", "github": "github-username-1" },
-    { "id": "member2", "name": "이름2", "github": "github-username-2" },
-    { "id": "member3", "name": "이름3", "github": "github-username-3" }
+    { "id": "seonho",   "name": "seonho",   "github": "Seonooo" },
+    { "id": "wooseung", "name": "wooseung", "github": "WooSeung00" },
+    { "id": "wodud",    "name": "wodud",    "github": "wodud17711" }
   ]
 }

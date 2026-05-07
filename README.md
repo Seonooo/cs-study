@@ -58,7 +58,7 @@
 
 - 빈 템플릿: [`members/template.md`](members/template.md)
 - 채워진 예시: [`members/example.md`](members/example.md)
-- 멤버 폴더: [member1](members/member1/), [member2](members/member2/), [member3](members/member3/)
+- 멤버 폴더: [seonho](members/seonho/), [wooseung](members/wooseung/), [wodud](members/wodud/)
 
 ---
 
