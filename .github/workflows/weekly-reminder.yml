@@ -9,6 +9,13 @@ on:
       week:
         description: '강제로 실행할 주차 번호 (비우면 자동 계산)'
         required: false
+      dry_run:
+        description: 'true 면 Discord 만 전송 (노트 파일 생성·커밋 모두 스킵)'
+        type: boolean
+        default: false
+      members_file:
+        description: '멤버 매핑 파일 (테스트 시 members.test.json 등 사용)'
+        default: 'members.json'
 
 permissions:
   contents: write    # members/ 변경사항 push 에 필요
@@ -16,6 +23,8 @@ permissions:
 jobs:
   notify-and-scaffold:
     runs-on: ubuntu-latest
+    env:
+      MEMBERS_FILE: ${{ github.event.inputs.members_file || 'members.json' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -58,6 +67,12 @@ jobs:
         env:
           WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
+          if [ ! -f "$MEMBERS_FILE" ]; then
+            echo "❌ 멤버 파일 '$MEMBERS_FILE' 없음"
+            exit 1
+          fi
+          echo "👥 멤버 파일: $MEMBERS_FILE"
+
           WEEK_INT="${{ steps.week.outputs.int }}"
           WEEK_PAD="${{ steps.week.outputs.padded }}"
           SLUG="${{ steps.meta.outputs.slug }}"
@@ -74,10 +89,10 @@ jobs:
             *)        COLOR=0 ;;
           esac
 
-          # 발표자 자동 로테이션 (members.json 순환)
-          MEMBER_COUNT=$(jq '.members | length' members.json)
+          # 발표자 자동 로테이션 ($MEMBERS_FILE 순환)
+          MEMBER_COUNT=$(jq '.members | length' "$MEMBERS_FILE")
           PRESENTER_IDX=$(( (WEEK_INT - 1) % MEMBER_COUNT ))
-          PRESENTER_NAME=$(jq -r ".members[$PRESENTER_IDX].name" members.json)
+          PRESENTER_NAME=$(jq -r ".members[$PRESENTER_IDX].name" "$MEMBERS_FILE")
 
           # 주차 README URL
           README_URL="https://github.com/${{ github.repository }}/blob/main/$PHASE/week${WEEK_PAD}-${SLUG}/README.md"
@@ -105,12 +120,13 @@ jobs:
 
       # 4) 멤버별 노트 파일 scaffold (이미 있으면 스킵)
       - name: Scaffold note files
+        if: github.event.inputs.dry_run != 'true'
         run: |
           WEEK_PAD="${{ steps.week.outputs.padded }}"
           SLUG="${{ steps.meta.outputs.slug }}"
           TOPIC="${{ steps.meta.outputs.topic }}"
 
-          jq -r '.members[] | "\(.id)\t\(.name)"' members.json | \
+          jq -r '.members[] | "\(.id)\t\(.name)"' "$MEMBERS_FILE" | \
           while IFS=$'\t' read -r MEMBER_ID MEMBER_NAME; do
             DIR="members/$MEMBER_ID"
             FILE="$DIR/week${WEEK_PAD}-${SLUG}.md"
@@ -129,8 +145,11 @@ jobs:
             echo "✅ Created $FILE"
           done
 
-      # 5) 변경사항 커밋 + 푸시
-      - name: Commit and push
+      # 5a) [운영 모드] 변경사항 커밋 + 푸시
+      - name: Commit and push (production mode)
+        if: |
+          github.event.inputs.dry_run != 'true' &&
+          (github.event.inputs.members_file == '' || github.event.inputs.members_file == 'members.json')
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -141,3 +160,15 @@ jobs:
             git commit -m "chore: scaffold week ${{ steps.week.outputs.padded }} note files"
             git push
           fi
+
+      # 5b) [테스트 모드] artifact 로 업로드 (commit 안 함)
+      - name: Upload test scaffolded files (test mode)
+        if: |
+          github.event.inputs.dry_run != 'true' &&
+          github.event.inputs.members_file != '' &&
+          github.event.inputs.members_file != 'members.json'
+        uses: actions/upload-artifact@v4
+        with:
+          name: scaffolded-notes-week-${{ steps.week.outputs.padded }}
+          path: members/
+          retention-days: 7

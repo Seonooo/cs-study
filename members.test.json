@@ -1,0 +1,6 @@
+{
+  "members": [
+    { "id": "test-member1", "name": "테스트1", "github": "test-user-1" },
+    { "id": "test-member2", "name": "테스트2", "github": "test-user-2" }
+  ]
+}
