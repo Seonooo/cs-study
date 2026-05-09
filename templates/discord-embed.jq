@@ -26,7 +26,7 @@
       { name: "❓ 꼬리 질문", value: "5개 (각 주차 README 참고)" },
       { name: "🎤 이번 주 발표자", value: $presenter },
       { name: "📁 정리 위치", value: ("`members/{본인폴더}/week" + $week_num + "-" + $slug + ".md`") },
-      { name: "📅 일정", value: "정리본 PR: 토요일 23:59\n토론: 일요일 21:00" }
+      { name: "📅 일정", value: "정리본 PR: 목요일 23:59\n토론: 금요일 21:00" }
     ],
     footer: { text: ("CS Study · Week " + $week_num_raw + " of 12") }
   }]
