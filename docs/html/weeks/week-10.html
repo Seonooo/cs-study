@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 10 · 파일 시스템과 I/O 모델 · cs-study</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="dot"></span>cs-study</a>
+    <nav class="nav">
+      <a href="../index.html">index</a>
+      <button class="theme-toggle" onclick="toggleTheme()">theme</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">PHASE 2 · OS · WEEK 10</div>
+    <h1>파일 시스템과 I/O 모델</h1>
+    <div class="week-meta">
+      <span class="phase-tag os">os</span>
+      <span class="sep"></span><span>slug: io-models</span>
+    </div>
+    <p class="lede">
+      sync/async와 blocking/non-blocking 4사분면을 정확히 구분하고, select → poll → epoll → io_uring으로 이어지는 I/O 모델 진화의 동기를 설명할 수 있어야 한다.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>학습 목표</h2>
+    <div class="goals os">
+      <ol>
+        <li>sync/async와 blocking/non-blocking 구분</li>
+        <li>epoll 효율의 비밀</li>
+        <li>ET (Edge Triggered) / LT (Level Triggered) 차이와 선택</li>
+        <li>io_uring 등장 배경</li>
+        <li>Node.js 단일 스레드 처리량</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>핵심 키워드</h2>
+    <ul class="kw-list">
+      <li>sync/async vs blocking/non-blocking</li><li>select · poll · epoll</li>
+      <li>ET vs LT</li><li>io_uring</li><li>Node.js Event Loop</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>딥다이브</h2>
+    <ul>
+      <li><strong>4사분면</strong> — sync/blocking, sync/non-blocking(poll loop), async/blocking(드물), async/non-blocking(완전 비동기 콜백).</li>
+      <li><strong>epoll의 효율</strong> — select/poll은 매 호출마다 O(N) 순회. epoll은 커널이 fd 상태 변화를 큐로 알림 → O(1) 조회.</li>
+      <li><strong>ET vs LT</strong> — LT: 데이터가 남아있는 한 계속 알림(안전, 간단). ET: 상태 변화 시 한 번만(빠름, non-blocking + 완전 소비 필요).</li>
+      <li><strong>io_uring</strong> — submission/completion ring을 mmap으로 공유 → 시스템콜 없이 다중 I/O 제출/회수. 디스크·네트워크 모두 일관된 비동기.</li>
+      <li><strong>Node.js</strong> — libuv 위에 단일 JS 스레드 + epoll/kqueue 이벤트 루프. CPU 작업이 들어오면 막힘 → worker_threads로 분리.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>토론 주제</h2>
+    <p class="discuss">백엔드 서버에서 I/O 모델 선택이 처리량에 미치는 영향은?</p>
+  </section>
+
+  <section class="section">
+    <h2>면접 단골 Q&amp;A</h2>
+    <div class="qa">
+      <p class="q">sync/async와 blocking/non-blocking은 어떻게 다른가요?</p>
+      <p class="a">blocking은 호출자가 결과를 기다리는지(제어 흐름 관점). sync는 결과를 어떻게 받는지(통지 방식). 둘은 독립 축이라 4사분면이 가능.</p>
+    </div>
+    <div class="qa">
+      <p class="q">select와 epoll의 차이는?</p>
+      <p class="a">select는 매번 fd_set을 커널에 복사하고 O(N) 순회. epoll은 fd 등록을 한 번 하고 커널이 이벤트 큐로 알림 → 고동시성에 유리.</p>
+    </div>
+    <div class="qa">
+      <p class="q">io_uring이 epoll보다 무엇이 더 좋은가요?</p>
+      <p class="a">epoll은 readiness만 알리고 read/write는 별도 syscall. io_uring은 submission/completion ring으로 syscall 자체를 줄이며, 네트워크·디스크 I/O를 일관된 비동기 인터페이스로.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>참고 자료</h2>
+    <ul>
+      <li>OSTEP Ch.36–43</li>
+      <li>"The C10K problem"</li>
+      <li>Linux man page: epoll(7), io_uring</li>
+    </ul>
+  </section>
+
+  <nav class="weeknav">
+    <a class="prev" href="week-09.html">
+      <div class="dir">← prev</div>
+      <div class="label">Week 09 · 메모리와 GC</div>
+    </a>
+    <a class="next" href="week-11.html">
+      <div class="dir">next →</div>
+      <div class="label">Week 11 · 관계형 모델</div>
+    </a>
+  </nav>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>cs-study · Week 10</span>
+    <a href="../index.html">← back to index</a>
+  </div>
+</footer>
+
+</body>
+</html>

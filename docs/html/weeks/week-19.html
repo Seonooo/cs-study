@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 19 · Spring Boot — Auto-config·@Transactional·Actuator · cs-study</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="dot"></span>cs-study</a>
+    <nav class="nav">
+      <a href="../index.html">index</a>
+      <button class="theme-toggle" onclick="toggleTheme()">theme</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">PHASE 4 · FRAMEWORK · WEEK 19 · 신설</div>
+    <h1>Spring Boot — Auto-config·@Transactional·Actuator</h1>
+    <div class="week-meta">
+      <span class="phase-tag framework">framework</span>
+      <span class="sep"></span><span>신설 주차</span>
+      <span class="sep"></span><span>slug: spring-boot-tx</span>
+    </div>
+    <p class="lede">
+      Spring Boot의 자동 구성이 어떻게 동작하고 어떻게 디버깅하는지, <code>@Transactional</code>이 안 먹는 함정 케이스가 무엇인지를 짚는다. 2026 면접에서 auto-config 디버깅 능력이 강조됨.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>학습 목표</h2>
+    <div class="goals framework">
+      <ol>
+        <li><code>@SpringBootApplication</code>의 3 어노테이션 분해</li>
+        <li>Auto-configuration 디버깅 (<code>--debug</code>, AutoConfigurationReport)</li>
+        <li><code>@Transactional</code>이 안 먹는 케이스 (self-invocation, private, checked exception)</li>
+        <li>트랜잭션 전파 속성과 적용 사례</li>
+        <li>Actuator 엔드포인트로 운영 가시성 확보</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>핵심 키워드</h2>
+    <ul class="kw-list">
+      <li>@SpringBootApplication</li><li>Auto-configuration · @Conditional</li>
+      <li>@Transactional 프록시 함정</li><li>전파 (Propagation)</li><li>Actuator</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>딥다이브</h2>
+    <ul>
+      <li><strong>@SpringBootApplication 분해</strong> — <code>@Configuration</code> + <code>@EnableAutoConfiguration</code> + <code>@ComponentScan</code>의 합성 어노테이션.</li>
+      <li><strong>Auto-config 동작</strong> — <code>META-INF/spring/...AutoConfiguration.imports</code>의 후보를 <code>@Conditional</code>(클래스 존재·빈 부재·프로퍼티)로 선별 적용.</li>
+      <li><strong>디버깅</strong> — <code>--debug</code>로 CONDITIONS EVALUATION REPORT 출력 → 어떤 auto-config가 matched/negative인지 확인.</li>
+      <li><strong>@Transactional 함정</strong> — 같은 클래스 self-invocation(프록시 우회), private/final 메서드, 기본 롤백은 unchecked 예외만(checked는 <code>rollbackFor</code> 명시).</li>
+      <li><strong>전파 속성</strong> — REQUIRED(기본, 기존 트랜잭션 참여) · REQUIRES_NEW(새 트랜잭션, 독립 커밋) · NESTED(savepoint) 등.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>토론 주제</h2>
+    <p class="discuss">Spring Boot가 가린 "마법"을 어디까지 이해해야 하는가?</p>
+  </section>
+
+  <section class="section">
+    <h2>면접 단골 Q&amp;A</h2>
+    <div class="qa">
+      <p class="q"><code>@SpringBootApplication</code>은 어떤 어노테이션으로 구성되나요?</p>
+      <p class="a"><code>@Configuration</code>(빈 정의 소스) + <code>@EnableAutoConfiguration</code>(조건부 자동 구성) + <code>@ComponentScan</code>(컴포넌트 탐색).</p>
+    </div>
+    <div class="qa">
+      <p class="q"><code>@Transactional</code>이 동작하지 않는 케이스는?</p>
+      <p class="a">같은 클래스 내부 self-invocation(프록시 우회), private/final 메서드, 기본 설정에서 checked exception 발생 시 롤백 안 됨(rollbackFor 필요).</p>
+    </div>
+    <div class="qa">
+      <p class="q">REQUIRED와 REQUIRES_NEW의 차이는?</p>
+      <p class="a">REQUIRED는 기존 트랜잭션에 참여(없으면 생성). REQUIRES_NEW는 항상 새 트랜잭션을 만들어 독립적으로 커밋/롤백 → 로깅·이력처럼 본 트랜잭션과 분리해야 할 때.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>참고 자료</h2>
+    <ul>
+      <li>Spring Boot 공식 docs — Auto-configuration, Actuator</li>
+      <li>Baeldung — Spring Transactional series</li>
+    </ul>
+  </section>
+
+  <nav class="weeknav">
+    <a class="prev" href="week-18.html">
+      <div class="dir">← prev</div>
+      <div class="label">Week 18 · JPA</div>
+    </a>
+    <a class="next" href="week-20.html">
+      <div class="dir">next →</div>
+      <div class="label">Week 20 · 운영·시스템디자인</div>
+    </a>
+  </nav>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>cs-study · Week 19</span>
+    <a href="../index.html">← back to index</a>
+  </div>
+</footer>
+
+</body>
+</html>

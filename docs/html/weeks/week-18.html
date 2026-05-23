@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 18 · JPA — 영속성 컨텍스트와 N+1 · cs-study</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="dot"></span>cs-study</a>
+    <nav class="nav">
+      <a href="../index.html">index</a>
+      <button class="theme-toggle" onclick="toggleTheme()">theme</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">PHASE 4 · FRAMEWORK · WEEK 18 · 신설</div>
+    <h1>JPA — 영속성 컨텍스트와 N+1</h1>
+    <div class="week-meta">
+      <span class="phase-tag framework">framework</span>
+      <span class="sep"></span><span>신설 주차</span>
+      <span class="sep"></span><span>slug: jpa-persistence</span>
+    </div>
+    <p class="lede">
+      영속성 컨텍스트가 주는 5가지 이점과 엔티티 생명주기를 이해하고, N+1 문제가 언제 발생하며 어떻게 해결하는지를 설명할 수 있어야 한다. 한국 백엔드 면접의 핵심 단골.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>학습 목표</h2>
+    <div class="goals framework">
+      <ol>
+        <li>영속성 컨텍스트가 주는 5가지 이점</li>
+        <li>엔티티 생명주기 상태 전이</li>
+        <li>더티 체킹 동작 원리</li>
+        <li>N+1 문제 발생 시점과 해결책 (Fetch Join, <code>@EntityGraph</code>, batch size)</li>
+        <li>LazyInitializationException 발생 조건과 회피</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>핵심 키워드</h2>
+    <ul class="kw-list">
+      <li>영속성 컨텍스트 5이점</li><li>엔티티 생명주기</li><li>더티 체킹</li>
+      <li>N+1 · Fetch Join</li><li>@EntityGraph · batch size</li><li>LazyInitializationException</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>딥다이브</h2>
+    <ul>
+      <li><strong>영속성 컨텍스트 5이점</strong> — 1차 캐시 · 동일성 보장 · 트랜잭션 쓰기 지연 · 변경 감지(더티 체킹) · 지연 로딩.</li>
+      <li><strong>엔티티 생명주기</strong> — transient(new) → persistent(persist/find) → detached(detach/close) → removed(remove). 영속 상태일 때만 더티 체킹·지연 로딩 동작.</li>
+      <li><strong>더티 체킹</strong> — 영속 컨텍스트가 엔티티 스냅샷을 보관, 트랜잭션 커밋 시점에 변경 비교 후 자동 UPDATE.</li>
+      <li><strong>N+1</strong> — 연관 엔티티를 1건 조회 후 N건의 추가 쿼리. 즉시 로딩에서도 발생. 해결: Fetch Join(컬렉션은 페이징 한계), <code>@EntityGraph</code>, <code>default_batch_fetch_size</code>로 IN 절 묶음.</li>
+      <li><strong>LazyInitializationException</strong> — 영속성 컨텍스트(트랜잭션) 종료 후 lazy 프록시 접근. OSIV·DTO 변환 시점 조정으로 회피.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>토론 주제</h2>
+    <p class="discuss">JPA를 쓰면서 SQL을 모르면 위험한가? 어디까지 추상화를 신뢰할 것인가?</p>
+  </section>
+
+  <section class="section">
+    <h2>면접 단골 Q&amp;A</h2>
+    <div class="qa">
+      <p class="q">영속성 컨텍스트의 이점을 설명해 주세요.</p>
+      <p class="a">1차 캐시(같은 트랜잭션 내 동일 조회는 DB 미접근), 동일성 보장(==), 쓰기 지연(SQL 모았다 flush), 변경 감지(자동 UPDATE), 지연 로딩(필요 시점에 조회).</p>
+    </div>
+    <div class="qa">
+      <p class="q">N+1 문제가 무엇이고 어떻게 해결하나요?</p>
+      <p class="a">연관 엔티티를 N건 조회할 때 쿼리가 1+N개 발생. Fetch Join으로 한 번에, 컬렉션 페이징이 필요하면 batch size로 IN 절 묶음, 또는 <code>@EntityGraph</code>.</p>
+    </div>
+    <div class="qa">
+      <p class="q">더티 체킹은 어떻게 동작하나요?</p>
+      <p class="a">영속 컨텍스트가 엔티티 최초 상태의 스냅샷을 보관하고, flush/commit 시점에 현재 값과 비교해 변경된 필드만 UPDATE 생성. 별도 save 호출 불필요.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>참고 자료</h2>
+    <ul>
+      <li>"자바 ORM 표준 JPA 프로그래밍" (김영한)</li>
+      <li>Hibernate User Guide</li>
+    </ul>
+  </section>
+
+  <nav class="weeknav">
+    <a class="prev" href="week-17.html">
+      <div class="dir">← prev</div>
+      <div class="label">Week 17 · Spring MVC·AOP</div>
+    </a>
+    <a class="next" href="week-19.html">
+      <div class="dir">next →</div>
+      <div class="label">Week 19 · Spring Boot</div>
+    </a>
+  </nav>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>cs-study · Week 18</span>
+    <a href="../index.html">← back to index</a>
+  </div>
+</footer>
+
+</body>
+</html>

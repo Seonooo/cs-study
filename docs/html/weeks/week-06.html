@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 06 · 프로세스와 스레드, 스케줄링 · cs-study</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="dot"></span>cs-study</a>
+    <nav class="nav">
+      <a href="../index.html">index</a>
+      <button class="theme-toggle" onclick="toggleTheme()">theme</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">PHASE 2 · OS · WEEK 06</div>
+    <h1>프로세스와 스레드, 스케줄링</h1>
+    <div class="week-meta">
+      <span class="phase-tag os">os</span>
+      <span class="sep"></span><span>slug: process-thread</span>
+    </div>
+    <p class="lede">
+      프로세스와 스레드가 자원을 어떻게 공유·분리하는지, 컨텍스트 스위칭이 왜 비용이 크고 어디서 발생하는지, 그리고 리눅스 CFS 같은 현대 스케줄러의 동작 원리를 짚는다.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>학습 목표</h2>
+    <div class="goals os">
+      <ol>
+        <li>프로세스 vs 스레드 자원 공유 관점</li>
+        <li>컨텍스트 스위칭 비용 구성</li>
+        <li>스케줄링 알고리즘 (FCFS, SJF, RR, MLFQ) 비교</li>
+        <li>리눅스 CFS 동작 원리</li>
+        <li>IPC 방식별 선택 기준</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>핵심 키워드</h2>
+    <ul class="kw-list">
+      <li>PCB / TCB</li><li>컨텍스트 스위칭</li><li>FCFS · SJF · RR · MLFQ</li>
+      <li>리눅스 CFS</li><li>IPC (파이프 · 소켓 · 공유메모리 · 시그널)</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>딥다이브</h2>
+    <ul>
+      <li><strong>PCB가 담는 것</strong> — PID, 레지스터, 스택/힙 포인터, 파일 디스크립터 테이블, 시그널 핸들러, 스케줄링 상태.</li>
+      <li><strong>컨텍스트 스위칭 비용</strong> — 직접: 레지스터 저장/복원. 간접: 캐시·TLB 무효화로 인한 미스 폭증.</li>
+      <li><strong>CFS의 핵심</strong> — vruntime이 가장 작은 태스크 우선. red-black tree로 O(log N) 선택. nice 값으로 가중치 조정.</li>
+      <li><strong>IPC 방식별</strong> — 파이프(부모-자식, 단방향) · 소켓(분산) · 공유메모리(최고 속도, 동기화 필요) · 시그널(비동기 통지).</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>토론 주제</h2>
+    <p class="discuss">멀티프로세스 vs 멀티스레드 — 언제 무엇을 쓸 것인가?</p>
+  </section>
+
+  <section class="section">
+    <h2>면접 단골 Q&amp;A</h2>
+    <div class="qa">
+      <p class="q">프로세스와 스레드의 차이는 무엇인가요?</p>
+      <p class="a">프로세스는 독립된 메모리 공간(코드·데이터·힙·스택)과 OS 자원을 보유. 스레드는 같은 프로세스 안의 실행 흐름으로 코드·데이터·힙을 공유하고 스택만 분리. 통신 비용·격리 수준의 트레이드오프.</p>
+    </div>
+    <div class="qa">
+      <p class="q">컨텍스트 스위칭 비용은 무엇으로 구성되나요?</p>
+      <p class="a">레지스터 저장/복원의 직접 비용 + 캐시·TLB 무효화로 인한 간접 비용. 후자가 더 크게 작용하는 경우가 많음.</p>
+    </div>
+    <div class="qa">
+      <p class="q">IPC 방식을 어떻게 선택하나요?</p>
+      <p class="a">속도가 최우선이면 공유메모리 + 락. 분산이면 소켓. 단순 부모-자식 통신이면 파이프. 비동기 통지가 필요하면 시그널.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>참고 자료</h2>
+    <ul>
+      <li>OSTEP Ch.4–10 (무료 PDF)</li>
+      <li>"운영체제와 정보기술의 원리" (반효경)</li>
+    </ul>
+  </section>
+
+  <nav class="weeknav">
+    <a class="prev" href="week-05.html">
+      <div class="dir">← prev</div>
+      <div class="label">Week 05 · 웹 인증</div>
+    </a>
+    <a class="next" href="week-07.html">
+      <div class="dir">next →</div>
+      <div class="label">Week 07 · 가상 스레드·코루틴</div>
+    </a>
+  </nav>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>cs-study · Week 06</span>
+    <a href="../index.html">← back to index</a>
+  </div>
+</footer>
+
+</body>
+</html>

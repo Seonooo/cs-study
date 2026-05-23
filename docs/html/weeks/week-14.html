@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 14 · 트랜잭션과 격리 수준 · cs-study</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="dot"></span>cs-study</a>
+    <nav class="nav">
+      <a href="../index.html">index</a>
+      <button class="theme-toggle" onclick="toggleTheme()">theme</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">PHASE 3 · DATABASE · WEEK 14</div>
+    <h1>트랜잭션과 격리 수준</h1>
+    <div class="week-meta">
+      <span class="phase-tag database">database</span>
+      <span class="sep"></span><span>slug: transaction-isolation</span>
+    </div>
+    <p class="lede">
+      ACID 4속성과 격리 수준 4단계, 그리고 각 단계가 어떤 이상 현상을 허용/방지하는지를 매핑할 수 있어야 한다. MVCC와 락 기반의 차이도 면접 단골 영역.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>학습 목표</h2>
+    <div class="goals database">
+      <ol>
+        <li>ACID 각 속성의 의미</li>
+        <li>격리 수준과 이상 현상 매핑</li>
+        <li>MVCC 동작 원리</li>
+        <li>MySQL InnoDB vs PostgreSQL Repeatable Read 차이</li>
+        <li>Write Skew와 SSI</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>핵심 키워드</h2>
+    <ul class="kw-list">
+      <li>ACID</li><li>격리 수준 4단계</li><li>MVCC vs 락 기반</li>
+      <li>Gap Lock</li><li>Snapshot Isolation</li><li>Write Skew · SSI</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>딥다이브</h2>
+    <ul>
+      <li><strong>이상 현상 매핑</strong> — Read Uncommitted(dirty 허용) → Read Committed(dirty 차단) → Repeatable Read(non-repeatable 차단) → Serializable(phantom까지 차단).</li>
+      <li><strong>MVCC</strong> — 행 버전을 유지해 읽기가 쓰기를 막지 않음. 트랜잭션은 시작 시점의 스냅샷으로 일관된 읽기.</li>
+      <li><strong>InnoDB의 Gap Lock</strong> — Repeatable Read에서 phantom을 방지하기 위해 인덱스 범위에 락 추가.</li>
+      <li><strong>Write Skew</strong> — Snapshot Isolation에서도 발생 가능한 이상. 두 트랜잭션이 서로 다른 행을 읽고 쓸 때 비즈니스 불변식이 깨짐.</li>
+      <li><strong>SSI</strong> — PostgreSQL의 Serializable. SI 위에 의존 그래프 추적으로 직렬화 가능성 깨지면 abort.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>토론 주제</h2>
+    <p class="discuss">실무에서 격리 수준을 어떻게 선택하는가? Read Committed가 사실상 표준이 된 이유는?</p>
+  </section>
+
+  <section class="section">
+    <h2>면접 단골 Q&amp;A</h2>
+    <div class="qa">
+      <p class="q">ACID 각 속성을 설명해 주세요.</p>
+      <p class="a">Atomicity(전부 성공 또는 전부 롤백), Consistency(불변식 유지), Isolation(동시 실행이 직렬과 동일한 효과), Durability(커밋 후 영속).</p>
+    </div>
+    <div class="qa">
+      <p class="q">격리 수준과 이상 현상의 매핑은?</p>
+      <p class="a">RU: dirty read · NR · phantom 모두 가능. RC: dirty 차단. RR: NR까지 차단(MySQL은 phantom도 gap lock으로 차단). SER: 전부 차단.</p>
+    </div>
+    <div class="qa">
+      <p class="q">MVCC와 락 기반의 차이는?</p>
+      <p class="a">락 기반은 읽기가 쓰기를 막음(성능 저하). MVCC는 버전을 두어 읽기는 락 없이 진행, 쓰기 충돌만 락/abort로 해결.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>참고 자료</h2>
+    <ul>
+      <li>"Designing Data-Intensive Applications" Ch.7</li>
+    </ul>
+  </section>
+
+  <nav class="weeknav">
+    <a class="prev" href="week-13.html">
+      <div class="dir">← prev</div>
+      <div class="label">Week 13 · 쿼리 최적화</div>
+    </a>
+    <a class="next" href="week-15.html">
+      <div class="dir">next →</div>
+      <div class="label">Week 15 · NoSQL/분산</div>
+    </a>
+  </nav>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>cs-study · Week 14</span>
+    <a href="../index.html">← back to index</a>
+  </div>
+</footer>
+
+</body>
+</html>

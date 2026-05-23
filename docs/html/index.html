@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS Study · 20주 백엔드 커리큘럼</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/theme.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="index.html" class="brand"><span class="dot"></span>cs-study</a>
+    <nav class="nav">
+      <a href="#phase-1">Network</a>
+      <a href="#phase-2">OS</a>
+      <a href="#phase-3">DB</a>
+      <a href="#phase-4">Framework</a>
+      <a href="#phase-5">Ops</a>
+      <button class="theme-toggle" onclick="toggleTheme()">theme</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">Backend CS Curriculum · 2026</div>
+    <h1>네트워크 → OS → DB → 프레임워크 → 운영<br>20주 백엔드 면접 우선순위 학습</h1>
+    <p class="lede">
+      한 주에 한 토픽씩 콕 집어 학습합니다. 인원 일정이 비동기여도 결석한 사람이 따라잡기 쉽도록 각 주차는 독립적으로 설계되어 있습니다. 매 주차 끝에 면접 단골 Q&amp;A 3개를 답안 형태로 정리합니다.
+    </p>
+
+    <div class="stats">
+      <div class="stat"><span class="n">20</span><span class="l">총 주차</span></div>
+      <div class="stat"><span class="n">5</span><span class="l">Phase</span></div>
+      <div class="stat"><span class="n">3 / 20</span><span class="l">진행</span></div>
+      <div class="stat"><span class="n">3</span><span class="l">멤버</span></div>
+    </div>
+  </section>
+
+  <!-- ========== Phase 1 ========== -->
+  <section class="phase-section" id="phase-1">
+    <div class="phase-header">
+      <span class="phase-tag network">Phase 1</span>
+      <h2>네트워크</h2>
+      <span class="range">Week 1–5</span>
+    </div>
+    <div class="cards">
+      <a class="card network" href="weeks/week-01.html">
+        <div class="num">WEEK 01 <span class="status done">done</span></div>
+        <div class="title">OSI/TCP-IP 계층 모델</div>
+        <div class="keywords">
+          <span class="kw">7계층</span><span class="kw">캡슐화</span><span class="kw">L4/L7</span><span class="kw">HTTP/3</span>
+        </div>
+      </a>
+      <a class="card network" href="weeks/week-02.html">
+        <div class="num">WEEK 02 <span class="status done">done</span></div>
+        <div class="title">TCP, UDP</div>
+        <div class="keywords">
+          <span class="kw">3-way handshake</span><span class="kw">TIME_WAIT</span><span class="kw">혼잡제어</span>
+        </div>
+      </a>
+      <a class="card network" href="weeks/week-03.html">
+        <div class="num">WEEK 03 <span class="status done">done</span></div>
+        <div class="title">HTTP / HTTPS</div>
+        <div class="keywords">
+          <span class="kw">HTTP/1·2·3</span><span class="kw">TLS 1.3</span><span class="kw">CORS</span><span class="kw">캐싱</span>
+        </div>
+      </a>
+      <a class="card network" href="weeks/week-04.html">
+        <div class="num">WEEK 04 <span class="status next">next</span></div>
+        <div class="title">DNS, 로드밸런싱, CDN</div>
+        <div class="keywords">
+          <span class="kw">recursive/iterative</span><span class="kw">TTL</span><span class="kw">Anycast</span>
+        </div>
+      </a>
+      <a class="card network" href="weeks/week-05.html">
+        <div class="num">WEEK 05 <span class="status new">new</span></div>
+        <div class="title">웹 인증 — 세션·쿠키·JWT·OAuth2</div>
+        <div class="keywords">
+          <span class="kw">JWT</span><span class="kw">OAuth2</span><span class="kw">CSRF/XSS</span><span class="kw">SSO</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ========== Phase 2 ========== -->
+  <section class="phase-section" id="phase-2">
+    <div class="phase-header">
+      <span class="phase-tag os">Phase 2</span>
+      <h2>운영체제</h2>
+      <span class="range">Week 6–10</span>
+    </div>
+    <div class="cards">
+      <a class="card os" href="weeks/week-06.html">
+        <div class="num">WEEK 06</div>
+        <div class="title">프로세스와 스레드, 스케줄링</div>
+        <div class="keywords">
+          <span class="kw">PCB/TCB</span><span class="kw">컨텍스트 스위칭</span><span class="kw">CFS</span><span class="kw">IPC</span>
+        </div>
+      </a>
+      <a class="card os" href="weeks/week-07.html">
+        <div class="num">WEEK 07 <span class="status new">new</span></div>
+        <div class="title">가상 스레드·코루틴·동시성 모델</div>
+        <div class="keywords">
+          <span class="kw">Virtual Thread</span><span class="kw">Goroutine M:N</span><span class="kw">Coroutine</span>
+        </div>
+      </a>
+      <a class="card os" href="weeks/week-08.html">
+        <div class="num">WEEK 08</div>
+        <div class="title">동기화와 데드락</div>
+        <div class="keywords">
+          <span class="kw">데드락 4조건</span><span class="kw">Mutex/Sem</span><span class="kw">CAS</span>
+        </div>
+      </a>
+      <a class="card os" href="weeks/week-09.html">
+        <div class="num">WEEK 09</div>
+        <div class="title">메모리 관리와 GC</div>
+        <div class="keywords">
+          <span class="kw">가상메모리</span><span class="kw">페이지폴트</span><span class="kw">ZGC</span>
+        </div>
+      </a>
+      <a class="card os" href="weeks/week-10.html">
+        <div class="num">WEEK 10</div>
+        <div class="title">파일 시스템과 I/O 모델</div>
+        <div class="keywords">
+          <span class="kw">epoll</span><span class="kw">io_uring</span><span class="kw">Event Loop</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ========== Phase 3 ========== -->
+  <section class="phase-section" id="phase-3">
+    <div class="phase-header">
+      <span class="phase-tag database">Phase 3</span>
+      <h2>데이터베이스</h2>
+      <span class="range">Week 11–15</span>
+    </div>
+    <div class="cards">
+      <a class="card database" href="weeks/week-11.html">
+        <div class="num">WEEK 11</div>
+        <div class="title">관계형 모델과 정규화</div>
+        <div class="keywords">
+          <span class="kw">1NF~BCNF</span><span class="kw">함수종속</span><span class="kw">UUIDv7</span>
+        </div>
+      </a>
+      <a class="card database" href="weeks/week-12.html">
+        <div class="num">WEEK 12</div>
+        <div class="title">인덱스와 B+Tree</div>
+        <div class="keywords">
+          <span class="kw">B+Tree</span><span class="kw">Clustered</span><span class="kw">복합 인덱스</span>
+        </div>
+      </a>
+      <a class="card database" href="weeks/week-13.html">
+        <div class="num">WEEK 13 <span class="status new">new</span></div>
+        <div class="title">쿼리 최적화와 EXPLAIN</div>
+        <div class="keywords">
+          <span class="kw">EXPLAIN</span><span class="kw">옵티마이저</span><span class="kw">Slow query</span>
+        </div>
+      </a>
+      <a class="card database" href="weeks/week-14.html">
+        <div class="num">WEEK 14</div>
+        <div class="title">트랜잭션과 격리 수준</div>
+        <div class="keywords">
+          <span class="kw">ACID</span><span class="kw">MVCC</span><span class="kw">Phantom</span>
+        </div>
+      </a>
+      <a class="card database" href="weeks/week-15.html">
+        <div class="num">WEEK 15</div>
+        <div class="title">NoSQL, 분산 데이터베이스</div>
+        <div class="keywords">
+          <span class="kw">CAP/PACELC</span><span class="kw">Quorum</span><span class="kw">Saga</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ========== Phase 4 ========== -->
+  <section class="phase-section" id="phase-4">
+    <div class="phase-header">
+      <span class="phase-tag framework">Phase 4</span>
+      <h2>프레임워크 — Spring / JPA</h2>
+      <span class="range">Week 16–19</span>
+    </div>
+    <div class="cards">
+      <a class="card framework" href="weeks/week-16.html">
+        <div class="num">WEEK 16 <span class="status new">new</span></div>
+        <div class="title">Spring IoC·DI·Bean</div>
+        <div class="keywords">
+          <span class="kw">IoC Container</span><span class="kw">DI 3방식</span><span class="kw">Bean Lifecycle</span>
+        </div>
+      </a>
+      <a class="card framework" href="weeks/week-17.html">
+        <div class="num">WEEK 17 <span class="status new">new</span></div>
+        <div class="title">Spring MVC·AOP·Filter/Interceptor</div>
+        <div class="keywords">
+          <span class="kw">DispatcherServlet</span><span class="kw">AOP</span><span class="kw">JDK/CGLIB Proxy</span>
+        </div>
+      </a>
+      <a class="card framework" href="weeks/week-18.html">
+        <div class="num">WEEK 18 <span class="status new">new</span></div>
+        <div class="title">JPA — 영속성 컨텍스트와 N+1</div>
+        <div class="keywords">
+          <span class="kw">영속성 컨텍스트</span><span class="kw">N+1</span><span class="kw">Fetch Join</span><span class="kw">더티 체킹</span>
+        </div>
+      </a>
+      <a class="card framework" href="weeks/week-19.html">
+        <div class="num">WEEK 19 <span class="status new">new</span></div>
+        <div class="title">Spring Boot — Auto-config·@Transactional·Actuator</div>
+        <div class="keywords">
+          <span class="kw">Auto-config</span><span class="kw">@Transactional</span><span class="kw">Actuator</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ========== Phase 5 ========== -->
+  <section class="phase-section" id="phase-5">
+    <div class="phase-header">
+      <span class="phase-tag ops">Phase 5</span>
+      <h2>운영·시스템디자인</h2>
+      <span class="range">Week 20</span>
+    </div>
+    <div class="cards">
+      <a class="card ops" href="weeks/week-20.html">
+        <div class="num">WEEK 20 <span class="status new">new</span></div>
+        <div class="title">CI/CD·Docker·옵저버빌리티·시스템디자인 베이직</div>
+        <div class="keywords">
+          <span class="kw">CI/CD</span><span class="kw">Docker</span><span class="kw">Logs/Metrics/Traces</span><span class="kw">10x 트래픽</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>cs-study · 20주 백엔드 면접 우선순위 커리큘럼</span>
+    <span><a href="https://github.com/Seonooo/cs-study">github</a> · 재구성 근거: cs-obsidian/wiki/topics/curriculum-redesign-2026</span>
+  </div>
+</footer>
+
+</body>
+</html>

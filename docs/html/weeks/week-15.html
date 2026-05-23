@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 15 · NoSQL, 분산 데이터베이스 · cs-study</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="dot"></span>cs-study</a>
+    <nav class="nav">
+      <a href="../index.html">index</a>
+      <button class="theme-toggle" onclick="toggleTheme()">theme</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">PHASE 3 · DATABASE · WEEK 15</div>
+    <h1>NoSQL, 분산 데이터베이스</h1>
+    <div class="week-meta">
+      <span class="phase-tag database">database</span>
+      <span class="sep"></span><span>slug: nosql-distributed</span>
+    </div>
+    <p class="lede">
+      CAP / PACELC로 분산 DB의 트레이드오프를 분류하고, 복제 방식과 합의 알고리즘이 어떤 보장을 주는지 설명한다. MSA 데이터 일관성 패턴(Saga·Outbox)까지가 면접 범위.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>학습 목표</h2>
+    <div class="goals database">
+      <ol>
+        <li>CAP과 PACELC로 시스템 분류</li>
+        <li>NoSQL 종류별 사용 사례</li>
+        <li>복제 방식 트레이드오프</li>
+        <li>Eventual Consistency와 Quorum</li>
+        <li>Saga 패턴과 Outbox</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>핵심 키워드</h2>
+    <ul class="kw-list">
+      <li>CAP · PACELC</li><li>KV · Document · Column-family · Graph</li>
+      <li>단일/다중/리더리스 복제</li><li>Quorum · Vector clock</li><li>Saga · Outbox</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>딥다이브</h2>
+    <ul>
+      <li><strong>CAP vs PACELC</strong> — CAP은 파티션 발생 시 C vs A. PACELC는 평시(E)에서 L(지연) vs C(일관성)까지 포함해 더 현실적 분류.</li>
+      <li><strong>NoSQL 4종</strong> — KV(Redis, DynamoDB), Document(MongoDB), Column-family(Cassandra, HBase), Graph(Neo4j).</li>
+      <li><strong>복제 방식</strong> — 단일 리더(쓰기 단순, 리더 장애가 SPOF) / 다중 리더(WAN 다지역) / 리더리스(Dynamo 스타일, quorum 기반).</li>
+      <li><strong>Saga 패턴</strong> — 분산 트랜잭션을 일련의 로컬 트랜잭션 + 보상 트랜잭션으로 대체. choreography vs orchestration.</li>
+      <li><strong>Outbox 패턴</strong> — DB와 메시지 큐의 듀얼 라이트 문제 → 같은 트랜잭션에 outbox 테이블 기록 후 이벤트 발행.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>토론 주제</h2>
+    <p class="discuss">마이크로서비스에서 데이터 일관성을 어떻게 보장할 것인가?</p>
+  </section>
+
+  <section class="section">
+    <h2>면접 단골 Q&amp;A</h2>
+    <div class="qa">
+      <p class="q">CAP과 PACELC의 차이는?</p>
+      <p class="a">CAP은 파티션 시점만 다룸. PACELC는 평시(E)에서 L과 C 트레이드오프까지 명시 → 더 현실적인 분류(예: Cassandra = PA/EL).</p>
+    </div>
+    <div class="qa">
+      <p class="q">리더리스 복제의 quorum은 어떻게 동작하나요?</p>
+      <p class="a">N개 노드에 쓰기를 W개에 확인, 읽기는 R개에서 → W+R&gt;N이면 강한 일관성. 일관성과 가용성/지연을 R·W 조정으로 절충.</p>
+    </div>
+    <div class="qa">
+      <p class="q">Saga 패턴은 무엇인가요?</p>
+      <p class="a">분산 트랜잭션 대신 일련의 로컬 트랜잭션. 중간 실패 시 이전 단계를 보상(compensating) 트랜잭션으로 되돌림. orchestration 또는 choreography 방식.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>참고 자료</h2>
+    <ul>
+      <li>"Designing Data-Intensive Applications" Ch.5–9</li>
+    </ul>
+  </section>
+
+  <nav class="weeknav">
+    <a class="prev" href="week-14.html">
+      <div class="dir">← prev</div>
+      <div class="label">Week 14 · 트랜잭션·격리수준</div>
+    </a>
+    <a class="next" href="week-16.html">
+      <div class="dir">next →</div>
+      <div class="label">Week 16 · Spring IoC·DI</div>
+    </a>
+  </nav>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>cs-study · Week 15</span>
+    <a href="../index.html">← back to index</a>
+  </div>
+</footer>
+
+</body>
+</html>

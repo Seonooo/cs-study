@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 02 · TCP, UDP · cs-study</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="dot"></span>cs-study</a>
+    <nav class="nav">
+      <a href="../index.html">index</a>
+      <button class="theme-toggle" onclick="toggleTheme()">theme</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">PHASE 1 · NETWORK · WEEK 02</div>
+    <h1>TCP, UDP</h1>
+    <div class="week-meta">
+      <span class="phase-tag network">network</span>
+      <span class="sep"></span><span>완료</span>
+      <span class="sep"></span><span>slug: tcp-udp</span>
+    </div>
+    <p class="lede">
+      TCP의 신뢰성 메커니즘(핸드셰이크·흐름제어·혼잡제어)을 이해하고, UDP와 비교해 언제 무엇을 선택해야 하는지 판단할 수 있게 된다.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>학습 목표</h2>
+    <div class="goals network">
+      <ol>
+        <li>3-way / 4-way handshake 동작과 그 횟수인 이유</li>
+        <li>TIME_WAIT 발생 원인과 해결책</li>
+        <li>TCP vs UDP 선택 기준</li>
+        <li>Connection Pool / Keepalive 의 역할</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>핵심 키워드</h2>
+    <ul class="kw-list">
+      <li>3·4-way handshake</li><li>TIME_WAIT</li><li>흐름 제어</li>
+      <li>혼잡 제어 (BBR)</li><li>Connection Pool</li><li>Nagle</li><li>TCP Fast Open</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>딥다이브</h2>
+    <ul>
+      <li><strong>TIME_WAIT가 필요한 이유</strong> — 마지막 ACK 손실 대비 + 이전 연결의 지연 패킷이 새 연결을 오염시키지 않도록 (2MSL).</li>
+      <li><strong>Nagle 알고리즘</strong> — 작은 패킷 묶음 송신으로 효율 향상, 반대로 지연 민감 트래픽엔 TCP_NODELAY.</li>
+      <li><strong>혼잡 제어 진화</strong> — Reno → CUBIC → BBR. BBR은 대역폭과 RTT를 측정해 손실 없이 혼잡 신호 탐지.</li>
+      <li><strong>QUIC가 UDP 위에 만들어진 이유</strong> — TCP의 HoL blocking·핸드셰이크 RTT를 사용자 공간에서 재설계.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>토론 주제</h2>
+    <p class="discuss">실시간성이 중요한 게임/영상에서 TCP vs UDP 선택 기준은?</p>
+  </section>
+
+  <section class="section">
+    <h2>면접 단골 Q&amp;A</h2>
+    <div class="qa">
+      <p class="q">TCP와 UDP의 차이는?</p>
+      <p class="a">TCP는 연결 지향·신뢰성·순서 보장, UDP는 비연결·고속·헤더 8바이트. 신뢰성이 필요 없거나 직접 구현하려는 경우 UDP.</p>
+    </div>
+    <div class="qa">
+      <p class="q">왜 3-way이고 4-way handshake인가?</p>
+      <p class="a">연결 수립은 양방향 SYN/ACK을 한 번씩 교환하면 3개로 충분하지만, 종료는 한쪽이 먼저 끝나도 다른 쪽이 데이터 송신을 끝낼 시간이 필요해 FIN/ACK가 각각 분리되어 4개.</p>
+    </div>
+    <div class="qa">
+      <p class="q">Connection Pool과 Keepalive의 역할은?</p>
+      <p class="a">매 요청마다 TCP 핸드셰이크(+ TLS) 비용을 피하기 위해 연결을 재사용. 풀 크기 튜닝으로 동시성과 자원 사이 균형.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>참고 자료</h2>
+    <ul>
+      <li>"TCP/IP Illustrated Vol.1"</li>
+      <li>실습: <code>tcpdump</code>, Wireshark로 3-way handshake 캡처</li>
+    </ul>
+  </section>
+
+  <nav class="weeknav">
+    <a class="prev" href="week-01.html">
+      <div class="dir">← prev</div>
+      <div class="label">Week 01 · OSI/TCP-IP</div>
+    </a>
+    <a class="next" href="week-03.html">
+      <div class="dir">next →</div>
+      <div class="label">Week 03 · HTTP / HTTPS</div>
+    </a>
+  </nav>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>cs-study · Week 02</span>
+    <a href="../index.html">← back to index</a>
+  </div>
+</footer>
+
+</body>
+</html>

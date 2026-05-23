@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 12 · 인덱스와 B+Tree · cs-study</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="dot"></span>cs-study</a>
+    <nav class="nav">
+      <a href="../index.html">index</a>
+      <button class="theme-toggle" onclick="toggleTheme()">theme</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">PHASE 3 · DATABASE · WEEK 12</div>
+    <h1>인덱스와 B+Tree</h1>
+    <div class="week-meta">
+      <span class="phase-tag database">database</span>
+      <span class="sep"></span><span>slug: index-bptree</span>
+    </div>
+    <p class="lede">
+      대부분의 RDBMS가 왜 B+Tree를 인덱스 자료구조로 채택했는지, 클러스터드 인덱스 구조가 PK 설계에 어떤 영향을 주는지, 복합 인덱스의 컬럼 순서를 어떻게 결정하는지를 다룬다.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>학습 목표</h2>
+    <div class="goals database">
+      <ol>
+        <li>DB가 B+Tree를 쓰는 이유</li>
+        <li>InnoDB PK 설계 가이드 (클러스터드 영향)</li>
+        <li>복합 인덱스 컬럼 순서 결정</li>
+        <li>커버링 인덱스로 쿼리 최적화</li>
+        <li>B+Tree와 해시 인덱스의 트레이드오프</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>핵심 키워드</h2>
+    <ul class="kw-list">
+      <li>B-Tree vs B+Tree</li><li>Clustered / Non-clustered</li>
+      <li>복합 인덱스 컬럼 순서</li><li>커버링 인덱스</li><li>해시 인덱스</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>딥다이브</h2>
+    <ul>
+      <li><strong>B+Tree가 표준인 이유</strong> — 모든 데이터가 leaf에만 있어 범위 스캔에 유리, 리프 노드 연결 리스트로 순회 가능. fan-out이 커서 디스크 I/O 최소화.</li>
+      <li><strong>클러스터드 vs 논클러스터드</strong> — InnoDB의 PK는 클러스터드(데이터 자체가 PK 순). 보조 인덱스는 PK 값을 leaf로 가짐 → PK가 길면 모든 보조 인덱스가 비대해짐.</li>
+      <li><strong>복합 인덱스 순서</strong> — 등호 조건이 자주 오는 컬럼을 앞에. 범위 조건은 뒤에 두어야 다음 컬럼이 인덱스 활용 가능.</li>
+      <li><strong>커버링 인덱스</strong> — SELECT/WHERE/ORDER BY가 모두 인덱스 안의 컬럼만 쓰면 테이블 접근 없이 인덱스만으로 응답.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>토론 주제</h2>
+    <p class="discuss">인덱스를 추가했는데 오히려 느려진 사례 — 왜 일어나는가?</p>
+  </section>
+
+  <section class="section">
+    <h2>면접 단골 Q&amp;A</h2>
+    <div class="qa">
+      <p class="q">DB는 왜 B-Tree 대신 B+Tree를 쓰나요?</p>
+      <p class="a">B+Tree는 leaf에만 데이터가 있어 fan-out이 커지고, leaf 간 연결 리스트로 범위 스캔이 효율적. 디스크 기반 인덱스에 최적.</p>
+    </div>
+    <div class="qa">
+      <p class="q">InnoDB PK는 왜 짧고 단조 증가하는 게 좋은가요?</p>
+      <p class="a">클러스터드라 모든 보조 인덱스 leaf가 PK 값을 갖기 때문에 PK가 길면 인덱스 전체가 비대해짐. 무작위 PK는 페이지 분할/조각화 유발.</p>
+    </div>
+    <div class="qa">
+      <p class="q">복합 인덱스 (A, B, C)에서 어떤 쿼리가 인덱스를 타나요?</p>
+      <p class="a">A · A+B · A+B+C 조건이 prefix matching으로 활용. WHERE B = ? 만 있으면 인덱스를 못 탐.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>참고 자료</h2>
+    <ul>
+      <li>"Real MySQL 8.0" 인덱스 챕터</li>
+      <li>PostgreSQL 공식 문서 — Indexes</li>
+    </ul>
+  </section>
+
+  <nav class="weeknav">
+    <a class="prev" href="week-11.html">
+      <div class="dir">← prev</div>
+      <div class="label">Week 11 · 관계형 모델</div>
+    </a>
+    <a class="next" href="week-13.html">
+      <div class="dir">next →</div>
+      <div class="label">Week 13 · 쿼리 최적화</div>
+    </a>
+  </nav>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>cs-study · Week 12</span>
+    <a href="../index.html">← back to index</a>
+  </div>
+</footer>
+
+</body>
+</html>

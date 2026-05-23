@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 11 · 관계형 모델과 정규화 · cs-study</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="dot"></span>cs-study</a>
+    <nav class="nav">
+      <a href="../index.html">index</a>
+      <button class="theme-toggle" onclick="toggleTheme()">theme</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">PHASE 3 · DATABASE · WEEK 11</div>
+    <h1>관계형 모델과 정규화</h1>
+    <div class="week-meta">
+      <span class="phase-tag database">database</span>
+      <span class="sep"></span><span>slug: relational-normalization</span>
+    </div>
+    <p class="lede">
+      1NF~BCNF가 어떤 이상 현상을 방지하는지 함수 종속성 관점에서 이해하고, OLTP/OLAP에 따라 정규화/반정규화 정책이 어떻게 갈리는지 설명할 수 있어야 한다.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>학습 목표</h2>
+    <div class="goals database">
+      <ol>
+        <li>정규화 단계와 방지하는 이상 현상</li>
+        <li>함수 종속성 분석</li>
+        <li>OLTP / OLAP별 정규화 정책</li>
+        <li>분산 환경 키 전략 선택</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>핵심 키워드</h2>
+    <ul class="kw-list">
+      <li>1NF ~ BCNF</li><li>함수 종속성</li><li>OLTP vs OLAP</li>
+      <li>UUID v7</li><li>Snowflake ID</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>딥다이브</h2>
+    <ul>
+      <li><strong>이상 현상</strong> — 삽입 / 갱신 / 삭제 이상. 정규화는 이걸 구조적으로 제거.</li>
+      <li><strong>3NF까지의 직관</strong> — "키, 키의 전부, 키만"이 종속 대상. BCNF는 결정자가 모두 키여야 함.</li>
+      <li><strong>OLTP vs OLAP</strong> — OLTP는 3NF 표준(쓰기 일관성). OLAP는 별 스키마 등 의도적 비정규화(읽기 성능).</li>
+      <li><strong>분산 PK</strong> — auto-increment는 단일 노드 병목. UUID v7은 시간 정렬 가능, Snowflake는 (time + node + seq)로 64비트.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>토론 주제</h2>
+    <p class="discuss">실무에서 3NF까지만 가는 이유는? 언제 반정규화를 할 것인가?</p>
+  </section>
+
+  <section class="section">
+    <h2>면접 단골 Q&amp;A</h2>
+    <div class="qa">
+      <p class="q">정규화의 목적과 단계는?</p>
+      <p class="a">중복 제거로 갱신/삭제 이상 방지. 1NF(원자값) → 2NF(부분 종속 제거) → 3NF(이행 종속 제거) → BCNF(결정자가 모두 후보키).</p>
+    </div>
+    <div class="qa">
+      <p class="q">언제 반정규화를 하나요?</p>
+      <p class="a">읽기 빈도가 압도적으로 높고 조인 비용이 병목일 때. 단, 갱신 시점의 정합성 보장 책임이 애플리케이션으로 옮겨감을 인지.</p>
+    </div>
+    <div class="qa">
+      <p class="q">분산 환경에서 PK 전략은?</p>
+      <p class="a">auto-increment는 중앙 시퀀스 병목 → UUID v7(시간 정렬 + 인덱스 친화) 또는 Snowflake(시간+노드+시퀀스, 정렬 + 짧음).</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>참고 자료</h2>
+    <ul>
+      <li>"데이터베이스 시스템" (Silberschatz) Ch.7–8</li>
+    </ul>
+  </section>
+
+  <nav class="weeknav">
+    <a class="prev" href="week-10.html">
+      <div class="dir">← prev</div>
+      <div class="label">Week 10 · I/O 모델</div>
+    </a>
+    <a class="next" href="week-12.html">
+      <div class="dir">next →</div>
+      <div class="label">Week 12 · 인덱스와 B+Tree</div>
+    </a>
+  </nav>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>cs-study · Week 11</span>
+    <a href="../index.html">← back to index</a>
+  </div>
+</footer>
+
+</body>
+</html>

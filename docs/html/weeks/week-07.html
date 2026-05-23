@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 07 · 가상 스레드·코루틴·동시성 모델 · cs-study</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="dot"></span>cs-study</a>
+    <nav class="nav">
+      <a href="../index.html">index</a>
+      <button class="theme-toggle" onclick="toggleTheme()">theme</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">PHASE 2 · OS · WEEK 07 · 신설</div>
+    <h1>가상 스레드·코루틴·동시성 모델</h1>
+    <div class="week-meta">
+      <span class="phase-tag os">os</span>
+      <span class="sep"></span><span>신설 주차 (2026 트렌드)</span>
+      <span class="sep"></span><span>slug: virtual-thread-coroutine</span>
+    </div>
+    <p class="lede">
+      Thread-per-request의 메모리·스위칭 한계가 어떻게 가상 스레드와 코루틴으로 해결되었는지, M:N 스케줄링이 어떻게 처리량을 끌어올리는지를 이해한다. Java 21의 Virtual Thread는 2026 면접 단골.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>학습 목표</h2>
+    <div class="goals os">
+      <ol>
+        <li>Thread-per-request 모델의 한계</li>
+        <li>Virtual Thread가 OS 스레드 비용을 줄이는 메커니즘</li>
+        <li>Goroutine M:N 스케줄링</li>
+        <li>Coroutine vs Virtual Thread 차이</li>
+        <li>멀티프로세스 / 멀티스레드 / 비동기 I/O / 가상스레드 선택 기준</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>핵심 키워드</h2>
+    <ul class="kw-list">
+      <li>Java Virtual Thread (Project Loom)</li><li>Goroutine M:N</li>
+      <li>Kotlin Coroutine</li><li>Reactive / async I/O</li><li>Carrier thread</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>딥다이브</h2>
+    <ul>
+      <li><strong>Thread-per-request 한계</strong> — OS 스레드 ≈ 수 MB 스택 + 컨텍스트 스위칭 비용. 수만 동시 연결에서 메모리·스위칭이 병목.</li>
+      <li><strong>Virtual Thread 메커니즘</strong> — JVM이 가벼운 스레드를 생성, blocking 시점에 carrier thread에서 unmount되고 다른 가상 스레드가 mount. 사용자 코드는 동기 스타일 그대로.</li>
+      <li><strong>Goroutine M:N</strong> — Go 런타임이 M개의 goroutine을 N개의 OS 스레드에 스케줄. work-stealing 큐 + 시스템콜 시 스레드 분리(handoff).</li>
+      <li><strong>Coroutine vs Virtual Thread</strong> — 코루틴은 suspend point가 명시적(언어 키워드), 가상 스레드는 일반 blocking 호출이 자동 yield. 모델은 비슷하나 통합 방식 차이.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>토론 주제</h2>
+    <p class="discuss">Virtual Thread가 Reactive를 대체할 수 있는가? 어떤 영역은 여전히 Reactive가 유리한가?</p>
+  </section>
+
+  <section class="section">
+    <h2>면접 단골 Q&amp;A</h2>
+    <div class="qa">
+      <p class="q">Virtual Thread와 일반 OS 스레드의 차이는?</p>
+      <p class="a">OS 스레드는 커널이 관리(스택 MB 단위, 스위칭 시 모드 전환). 가상 스레드는 JVM이 관리(스택 동적, blocking 시 carrier에서 분리되어 다른 가상 스레드에 양보).</p>
+    </div>
+    <div class="qa">
+      <p class="q">M:N 스케줄링이 무엇이고 왜 효율적인가?</p>
+      <p class="a">M개의 사용자 레벨 태스크를 N개의 OS 스레드에 매핑(M ≫ N). 컨텍스트 스위칭이 유저 공간에서 일어나 비용 ↓, 한 태스크의 blocking이 전체를 막지 않도록 런타임이 핸드오프.</p>
+    </div>
+    <div class="qa">
+      <p class="q">동시성 모델 4가지 — 언제 무엇을 쓸 것인가?</p>
+      <p class="a">격리·신뢰성 우선이면 멀티프로세스, CPU 집약 + 공유 상태가 적으면 멀티스레드, I/O 중심 고동시성이면 비동기 I/O / 가상스레드.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>참고 자료</h2>
+    <ul>
+      <li>JEP 444 — Virtual Threads (Java 21)</li>
+      <li>"Java Concurrency in Practice"</li>
+      <li>Go 공식 블로그 — Goroutine 스케줄러 설계</li>
+    </ul>
+  </section>
+
+  <nav class="weeknav">
+    <a class="prev" href="week-06.html">
+      <div class="dir">← prev</div>
+      <div class="label">Week 06 · 프로세스와 스레드</div>
+    </a>
+    <a class="next" href="week-08.html">
+      <div class="dir">next →</div>
+      <div class="label">Week 08 · 동기화와 데드락</div>
+    </a>
+  </nav>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>cs-study · Week 07</span>
+    <a href="../index.html">← back to index</a>
+  </div>
+</footer>
+
+</body>
+</html>

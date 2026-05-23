@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 09 · 메모리 관리와 GC · cs-study</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="dot"></span>cs-study</a>
+    <nav class="nav">
+      <a href="../index.html">index</a>
+      <button class="theme-toggle" onclick="toggleTheme()">theme</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">PHASE 2 · OS · WEEK 09</div>
+    <h1>메모리 관리와 GC</h1>
+    <div class="week-meta">
+      <span class="phase-tag os">os</span>
+      <span class="sep"></span><span>slug: memory-gc</span>
+    </div>
+    <p class="lede">
+      OS의 가상 메모리·페이징부터 JVM의 GC 진화(Serial → G1 → ZGC)까지 메모리 계층 전체를 한 줄로 꿰고, Stop-the-world 시간이 어떻게 줄어왔는지 설명할 수 있어야 한다.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>학습 목표</h2>
+    <div class="goals os">
+      <ol>
+        <li>가상 메모리 목적과 페이징 동작</li>
+        <li>TLB miss vs Page Fault 비용 계층</li>
+        <li>캐시 친화적 코드 작성 원칙</li>
+        <li>JVM 메모리 영역과 GC 알고리즘 진화 (Serial → G1 → ZGC)</li>
+        <li>Stop-the-world 시간이 짧아진 메커니즘</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>핵심 키워드</h2>
+    <ul class="kw-list">
+      <li>가상 메모리 / 페이징</li><li>TLB miss · Page Fault</li>
+      <li>JVM 메모리 영역</li><li>ZGC · Shenandoah · G1</li><li>캐시 라인</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>딥다이브</h2>
+    <ul>
+      <li><strong>가상 메모리 목적</strong> — 프로세스 간 격리 + 물리 메모리 추상화 + 디스크로 swap.</li>
+      <li><strong>비용 계층</strong> — 레지스터 ≪ L1 캐시 ≪ TLB hit ≪ TLB miss ≪ Page Fault(디스크). 한 단계 내려갈 때마다 수십~수만 배.</li>
+      <li><strong>캐시 친화적 코드</strong> — 순차 접근, 작은 데이터 구조, false sharing 회피.</li>
+      <li><strong>GC 진화</strong> — Serial(STW 전체) → Parallel(병렬 STW) → CMS(concurrent mark) → G1(영역 분할, 예측 가능 GC) → ZGC/Shenandoah(STW &lt; 10ms, colored pointer/load barrier).</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>토론 주제</h2>
+    <p class="discuss">GC 언어와 수동 메모리 관리 언어의 트레이드오프 — 어디까지가 자동화의 비용인가?</p>
+  </section>
+
+  <section class="section">
+    <h2>면접 단골 Q&amp;A</h2>
+    <div class="qa">
+      <p class="q">가상 메모리는 왜 필요한가요?</p>
+      <p class="a">프로세스 간 격리, 물리 메모리보다 큰 주소 공간 사용, 페이지 단위 보호·공유. 페이징을 통해 disk swap도 가능.</p>
+    </div>
+    <div class="qa">
+      <p class="q">TLB miss와 Page Fault의 차이는?</p>
+      <p class="a">TLB miss는 페이지 테이블에서 매핑을 찾는 비용(보통 수십~수백 ns). Page Fault는 페이지 자체가 메모리에 없어 디스크에서 가져와야 하는 비용(ms 단위).</p>
+    </div>
+    <div class="qa">
+      <p class="q">ZGC가 STW를 어떻게 10ms 이하로 줄였나요?</p>
+      <p class="a">colored pointer로 객체 상태를 포인터 비트에 인코딩하고, load barrier로 동시 마킹·재배치를 지원. 대부분의 GC 작업이 애플리케이션 스레드와 동시에 실행.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>참고 자료</h2>
+    <ul>
+      <li>OSTEP Ch.13–23</li>
+      <li>Oracle JVM 문서 — GC tuning</li>
+      <li>"Java Performance" (Scott Oaks)</li>
+    </ul>
+  </section>
+
+  <nav class="weeknav">
+    <a class="prev" href="week-08.html">
+      <div class="dir">← prev</div>
+      <div class="label">Week 08 · 동기화와 데드락</div>
+    </a>
+    <a class="next" href="week-10.html">
+      <div class="dir">next →</div>
+      <div class="label">Week 10 · I/O 모델</div>
+    </a>
+  </nav>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>cs-study · Week 09</span>
+    <a href="../index.html">← back to index</a>
+  </div>
+</footer>
+
+</body>
+</html>

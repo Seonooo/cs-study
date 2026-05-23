@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 13 · 쿼리 최적화와 EXPLAIN · cs-study</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="dot"></span>cs-study</a>
+    <nav class="nav">
+      <a href="../index.html">index</a>
+      <button class="theme-toggle" onclick="toggleTheme()">theme</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">PHASE 3 · DATABASE · WEEK 13 · 신설</div>
+    <h1>쿼리 최적화와 EXPLAIN</h1>
+    <div class="week-meta">
+      <span class="phase-tag database">database</span>
+      <span class="sep"></span><span>신설 주차</span>
+      <span class="sep"></span><span>slug: query-optimization</span>
+    </div>
+    <p class="lede">
+      EXPLAIN 결과를 읽어 병목을 짚어내고, 옵티마이저가 인덱스를 안 타는 이유를 진단할 수 있어야 한다. 조인 알고리즘 3종(NL/Hash/Merge)의 적합 상황까지가 면접에서 깊게 들어가는 단골.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>학습 목표</h2>
+    <div class="goals database">
+      <ol>
+        <li>EXPLAIN 결과 읽고 병목 파악</li>
+        <li>옵티마이저가 인덱스를 안 타는 케이스 진단</li>
+        <li>조인 알고리즘별 선택 기준</li>
+        <li>Slow query log 활용</li>
+        <li>쿼리 리라이팅 전략</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>핵심 키워드</h2>
+    <ul class="kw-list">
+      <li>EXPLAIN · EXPLAIN ANALYZE</li><li>옵티마이저 통계</li>
+      <li>인덱스 미사용</li><li>Slow query</li><li>NL · Hash · Merge Join</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>딥다이브</h2>
+    <ul>
+      <li><strong>EXPLAIN 핵심 컬럼</strong> — type(접근 방식: ref/range/ALL) · key(쓴 인덱스) · rows(예상 행 수) · Extra(Using filesort/temporary 등).</li>
+      <li><strong>인덱스 안 타는 케이스</strong> — 컬럼에 함수/연산, 타입 불일치, 선택도가 낮은 인덱스, 옵티마이저 통계가 오래된 경우.</li>
+      <li><strong>조인 알고리즘</strong> — NL(작은 외부 테이블+인덱스 활용), Hash(대용량 + 인덱스 없음), Sort-Merge(정렬되어 있거나 정렬 비용 감수).</li>
+      <li><strong>Slow query 활용</strong> — 임계 설정(예: 1초), EXPLAIN ANALYZE로 실제 실행 비용 확인, 인덱스 후보 도출.</li>
+      <li><strong>쿼리 리라이팅</strong> — IN(서브쿼리) → JOIN, OR 분기 → UNION ALL, 페이지네이션은 OFFSET 대신 keyset.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>토론 주제</h2>
+    <p class="discuss">ORM이 만들어내는 쿼리를 어디까지 신뢰할 것인가? 어디서부터 SQL을 직접 쓰는가?</p>
+  </section>
+
+  <section class="section">
+    <h2>면접 단골 Q&amp;A</h2>
+    <div class="qa">
+      <p class="q">EXPLAIN에서 가장 먼저 보는 것은?</p>
+      <p class="a">type과 rows. type이 ALL(풀스캔)이면 인덱스 미사용 가능성, rows가 예상보다 크면 통계 또는 카디널리티 추정 오류.</p>
+    </div>
+    <div class="qa">
+      <p class="q">옵티마이저가 인덱스를 안 타는 흔한 이유는?</p>
+      <p class="a">WHERE 컬럼에 함수/연산 적용, 타입 불일치(암묵적 형변환), 통계가 오래되어 풀스캔이 더 싸 보임, 결과 행이 테이블의 큰 비중을 차지(인덱스 비용이 더 큼).</p>
+    </div>
+    <div class="qa">
+      <p class="q">Hash Join은 언제 유리한가요?</p>
+      <p class="a">두 테이블이 크고 조인 키에 인덱스가 없을 때. 한 쪽을 메모리 해시 테이블로 만들고 다른 쪽을 한 번만 스캔.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>참고 자료</h2>
+    <ul>
+      <li>"Real MySQL 8.0" 옵티마이저 챕터</li>
+      <li>Use The Index, Luke (use-the-index-luke.com)</li>
+    </ul>
+  </section>
+
+  <nav class="weeknav">
+    <a class="prev" href="week-12.html">
+      <div class="dir">← prev</div>
+      <div class="label">Week 12 · 인덱스와 B+Tree</div>
+    </a>
+    <a class="next" href="week-14.html">
+      <div class="dir">next →</div>
+      <div class="label">Week 14 · 트랜잭션·격리수준</div>
+    </a>
+  </nav>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>cs-study · Week 13</span>
+    <a href="../index.html">← back to index</a>
+  </div>
+</footer>
+
+</body>
+</html>

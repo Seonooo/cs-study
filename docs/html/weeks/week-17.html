@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 17 · Spring MVC·AOP·Filter/Interceptor · cs-study</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="dot"></span>cs-study</a>
+    <nav class="nav">
+      <a href="../index.html">index</a>
+      <button class="theme-toggle" onclick="toggleTheme()">theme</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">PHASE 4 · FRAMEWORK · WEEK 17 · 신설</div>
+    <h1>Spring MVC·AOP·Filter/Interceptor</h1>
+    <div class="week-meta">
+      <span class="phase-tag framework">framework</span>
+      <span class="sep"></span><span>신설 주차</span>
+      <span class="sep"></span><span>slug: spring-mvc-aop</span>
+    </div>
+    <p class="lede">
+      요청이 DispatcherServlet에 도착해 응답이 나가기까지의 전체 흐름을 추적하고, 횡단 관심사를 Filter·Interceptor·AOP 중 어디에 둘지 판단할 수 있어야 한다.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>학습 목표</h2>
+    <div class="goals framework">
+      <ol>
+        <li>DispatcherServlet 요청 처리 흐름</li>
+        <li>AOP 핵심 용어와 동작 원리</li>
+        <li>JDK Proxy vs CGLIB 차이</li>
+        <li>Filter / Interceptor / AOP 적용 시점 비교</li>
+        <li><code>@RestController</code> vs <code>@Controller</code></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>핵심 키워드</h2>
+    <ul class="kw-list">
+      <li>DispatcherServlet (Front Controller)</li><li>HandlerMapping · ViewResolver</li>
+      <li>AOP (Aspect · Advice · Pointcut · JoinPoint)</li><li>JDK vs CGLIB Proxy</li>
+      <li>Filter vs Interceptor vs AOP</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>딥다이브</h2>
+    <ul>
+      <li><strong>요청 흐름</strong> — DispatcherServlet → HandlerMapping(핸들러 탐색) → HandlerAdapter(실행) → Controller → ViewResolver / MessageConverter → 응답.</li>
+      <li><strong>AOP 5요소</strong> — Aspect(모듈), JoinPoint(적용 지점), Pointcut(선택 표현식), Advice(실행 코드: Before/After/Around), Weaving(적용).</li>
+      <li><strong>JDK vs CGLIB</strong> — 인터페이스 있으면 JDK Dynamic Proxy, 없으면 CGLIB(상속 기반). Spring Boot는 기본 CGLIB.</li>
+      <li><strong>self-invocation 함정</strong> — 같은 클래스 내부 메서드 호출은 프록시를 거치지 않아 AOP/@Transactional 미적용.</li>
+      <li><strong>Filter vs Interceptor vs AOP</strong> — Filter(서블릿 레벨, 요청 전체) → Interceptor(스프링 MVC, 핸들러 전후) → AOP(메서드 레벨, 비즈니스 로직).</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>토론 주제</h2>
+    <p class="discuss">횡단 관심사(로깅·인증·트랜잭션)를 Filter / Interceptor / AOP 어디에 둘 것인가?</p>
+  </section>
+
+  <section class="section">
+    <h2>면접 단골 Q&amp;A</h2>
+    <div class="qa">
+      <p class="q">DispatcherServlet의 요청 처리 흐름을 설명해 주세요.</p>
+      <p class="a">DispatcherServlet이 모든 요청을 받아 HandlerMapping으로 핸들러를 찾고, HandlerAdapter로 컨트롤러를 실행, 반환값을 ViewResolver/MessageConverter로 처리해 응답.</p>
+    </div>
+    <div class="qa">
+      <p class="q">Filter와 Interceptor의 차이는?</p>
+      <p class="a">Filter는 서블릿 컨테이너 레벨로 DispatcherServlet 이전·이후. Interceptor는 스프링 MVC 레벨로 핸들러 실행 전후, 스프링 빈/컨텍스트 접근 가능.</p>
+    </div>
+    <div class="qa">
+      <p class="q">AOP가 같은 클래스 내부 호출에 안 먹는 이유는?</p>
+      <p class="a">Spring AOP는 프록시 기반. <code>this.method()</code> 자기 호출은 프록시를 우회하므로 advice가 적용되지 않음. 자기 호출 분리 또는 AspectJ weaving으로 해결.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>참고 자료</h2>
+    <ul>
+      <li>Spring Framework 공식 docs — Web MVC, AOP</li>
+      <li>"토비의 스프링 3.1" Vol.2</li>
+    </ul>
+  </section>
+
+  <nav class="weeknav">
+    <a class="prev" href="week-16.html">
+      <div class="dir">← prev</div>
+      <div class="label">Week 16 · Spring IoC·DI</div>
+    </a>
+    <a class="next" href="week-18.html">
+      <div class="dir">next →</div>
+      <div class="label">Week 18 · JPA</div>
+    </a>
+  </nav>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>cs-study · Week 17</span>
+    <a href="../index.html">← back to index</a>
+  </div>
+</footer>
+
+</body>
+</html>

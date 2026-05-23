@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 04 · DNS, 로드밸런싱, CDN · cs-study</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="dot"></span>cs-study</a>
+    <nav class="nav">
+      <a href="../index.html">index</a>
+      <button class="theme-toggle" onclick="toggleTheme()">theme</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">PHASE 1 · NETWORK · WEEK 04</div>
+    <h1>DNS, 로드밸런싱, CDN</h1>
+    <div class="week-meta">
+      <span class="phase-tag network">network</span>
+      <span class="sep"></span><span>다음 주차</span>
+      <span class="sep"></span><span>slug: dns-lb-cdn</span>
+    </div>
+    <p class="lede">
+      도메인 이름이 어떻게 IP로 변환되고, 트래픽이 여러 서버에 어떻게 분배되며, CDN이 어디서 캐싱해 응답을 빠르게 하는지의 큰 흐름을 잡는다.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>학습 목표</h2>
+    <div class="goals network">
+      <ol>
+        <li>DNS 조회 흐름 (recursive vs iterative)</li>
+        <li>TTL 트레이드오프와 마이그레이션 전략</li>
+        <li>Sticky session vs Stateless 결정 기준</li>
+        <li>Anycast 라우팅 원리</li>
+        <li>CDN 캐시 전략 (origin shield, stale-while-revalidate)</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>핵심 키워드</h2>
+    <ul class="kw-list">
+      <li>DNS recursive / iterative</li><li>TTL 마이그레이션</li>
+      <li>Sticky session</li><li>Anycast</li><li>Origin Shield</li><li>stale-while-revalidate</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>딥다이브</h2>
+    <ul>
+      <li><strong>DNS 계층</strong> — Root → TLD → Authoritative. Resolver는 캐시·forwarder 역할.</li>
+      <li><strong>TTL 마이그레이션</strong> — 변경 직전 TTL을 미리 낮춰 전파 지연 최소화 후, 안정화 뒤 다시 올림.</li>
+      <li><strong>Sticky vs Stateless</strong> — 세션 친화성이 필요하면 sticky, 무중단 확장이 우선이면 stateless + 외부 세션 저장소.</li>
+      <li><strong>Anycast</strong> — 같은 IP를 여러 PoP에 광고 → BGP가 가장 가까운 노드로 라우팅. CDN·DNS에 광범위 활용.</li>
+      <li><strong>CDN 캐싱 키</strong> — URL + query + 헤더로 키 구성, vary 헤더와 cache-control 조합으로 정밀 제어.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>토론 주제</h2>
+    <p class="discuss">글로벌 서비스를 출시한다면 어떤 순서로 인프라(DNS·LB·CDN)를 배치할 것인가?</p>
+  </section>
+
+  <section class="section">
+    <h2>면접 단골 Q&amp;A</h2>
+    <div class="qa">
+      <p class="q">DNS 조회 흐름을 설명해 주세요.</p>
+      <p class="a">클라이언트 → Recursive Resolver → Root → TLD → Authoritative → 응답 캐시 후 클라이언트. 각 단계에 TTL 기반 캐시.</p>
+    </div>
+    <div class="qa">
+      <p class="q">Sticky session vs Stateless, 언제 무엇을 쓰나요?</p>
+      <p class="a">레거시 세션 의존 앱이나 인메모리 캐시 사용 시 sticky가 단순. 클라우드 네이티브·오토스케일 환경에서는 외부 세션 저장소 + stateless가 표준.</p>
+    </div>
+    <div class="qa">
+      <p class="q">CDN의 origin shield는 어떤 역할을 하나요?</p>
+      <p class="a">엣지 노드들 사이에 중간 레이어를 두어 origin으로 가는 요청을 통합·중복 제거. cache miss 증폭을 줄여 origin 부하 보호.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>참고 자료</h2>
+    <ul>
+      <li>"Site Reliability Engineering" — Load Balancing 관련 챕터</li>
+      <li>AWS / GCP / Cloudflare 공식 CDN 가이드</li>
+    </ul>
+  </section>
+
+  <nav class="weeknav">
+    <a class="prev" href="week-03.html">
+      <div class="dir">← prev</div>
+      <div class="label">Week 03 · HTTP / HTTPS</div>
+    </a>
+    <a class="next" href="week-05.html">
+      <div class="dir">next →</div>
+      <div class="label">Week 05 · 웹 인증</div>
+    </a>
+  </nav>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>cs-study · Week 04</span>
+    <a href="../index.html">← back to index</a>
+  </div>
+</footer>
+
+</body>
+</html>

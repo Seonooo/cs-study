@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 16 · Spring IoC·DI·Bean · cs-study</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="dot"></span>cs-study</a>
+    <nav class="nav">
+      <a href="../index.html">index</a>
+      <button class="theme-toggle" onclick="toggleTheme()">theme</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">PHASE 4 · FRAMEWORK · WEEK 16 · 신설</div>
+    <h1>Spring IoC·DI·Bean</h1>
+    <div class="week-meta">
+      <span class="phase-tag framework">framework</span>
+      <span class="sep"></span><span>신설 주차</span>
+      <span class="sep"></span><span>slug: spring-ioc-di</span>
+    </div>
+    <p class="lede">
+      Spring의 출발점인 IoC 컨테이너와 DI 3방식, Bean 생명주기·스코프, 그리고 순환 의존성이 왜 생기고 어떻게 해결하는지를 다룬다. 생성자 주입이 권장되는 이유는 면접 단골.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>학습 목표</h2>
+    <div class="goals framework">
+      <ol>
+        <li>IoC와 DI 개념과 도입 이유</li>
+        <li>생성자 주입이 권장되는 이유</li>
+        <li>Bean 생명주기 단계와 콜백 (<code>@PostConstruct</code>, <code>@PreDestroy</code>)</li>
+        <li>Singleton vs Prototype 선택</li>
+        <li>순환 의존성 발생 원인과 해결</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>핵심 키워드</h2>
+    <ul class="kw-list">
+      <li>IoC Container</li><li>BeanFactory · ApplicationContext</li>
+      <li>DI 3방식 (Constructor · Setter · Field)</li><li>Bean Lifecycle</li>
+      <li>Bean Scope</li><li>순환 의존성</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>딥다이브</h2>
+    <ul>
+      <li><strong>IoC의 의미</strong> — 객체 생성·소멸·연결의 제어권을 프레임워크로 역전. 사용자는 "무엇이 필요한지"만 선언.</li>
+      <li><strong>생성자 주입 권장 이유</strong> — 불변성(final), 누락 시 컴파일 단계 인지, 순환 의존성 조기 탐지, 테스트 용이.</li>
+      <li><strong>Bean Lifecycle</strong> — 인스턴스화 → 의존성 주입 → BeanNameAware/BeanFactoryAware → BeanPostProcessor(before) → InitializingBean/<code>@PostConstruct</code> → 사용 → <code>@PreDestroy</code>/DisposableBean.</li>
+      <li><strong>Scope</strong> — singleton(컨테이너당 1개, 기본) / prototype(요청마다 새 인스턴스, 컨테이너가 destroy 책임지지 않음) / request · session · application(웹 전용).</li>
+      <li><strong>순환 의존성</strong> — 생성자 주입 + 양방향 의존이면 BeanCurrentlyInCreationException. 해결: 설계 분리, <code>@Lazy</code>, 또는 Setter 주입.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>토론 주제</h2>
+    <p class="discuss">Spring의 IoC 컨테이너 없이 우리 손으로 만들 때 무엇이 어려운가?</p>
+  </section>
+
+  <section class="section">
+    <h2>면접 단골 Q&amp;A</h2>
+    <div class="qa">
+      <p class="q">IoC와 DI의 차이는?</p>
+      <p class="a">IoC는 제어 흐름 역전이라는 일반 원칙. DI는 IoC를 구현하는 한 방법(의존성을 외부에서 주입). DI 외에도 Service Locator, Template Method 등이 IoC.</p>
+    </div>
+    <div class="qa">
+      <p class="q">생성자 주입을 권장하는 이유는?</p>
+      <p class="a">final 필드로 불변성 확보, 누락된 의존성을 컴파일/시작 시점에 발견, 순환 의존성을 조기 탐지, 테스트에서 new로 직접 주입 가능.</p>
+    </div>
+    <div class="qa">
+      <p class="q">Singleton과 Prototype 중 무엇을 쓸지 어떻게 결정하나요?</p>
+      <p class="a">상태 없는 서비스/리포지토리는 singleton(메모리 효율). 요청마다 별도 상태가 필요하면 prototype. prototype은 컨테이너가 destroy 안 하므로 자원 해제 책임을 직접 짐.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>참고 자료</h2>
+    <ul>
+      <li>Spring Framework 공식 docs — Core: Beans</li>
+      <li>"토비의 스프링 3.1" Vol.1</li>
+    </ul>
+  </section>
+
+  <nav class="weeknav">
+    <a class="prev" href="week-15.html">
+      <div class="dir">← prev</div>
+      <div class="label">Week 15 · NoSQL/분산</div>
+    </a>
+    <a class="next" href="week-17.html">
+      <div class="dir">next →</div>
+      <div class="label">Week 17 · Spring MVC·AOP</div>
+    </a>
+  </nav>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>cs-study · Week 16</span>
+    <a href="../index.html">← back to index</a>
+  </div>
+</footer>
+
+</body>
+</html>

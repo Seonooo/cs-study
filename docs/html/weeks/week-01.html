@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 01 · OSI/TCP-IP 계층 모델 · cs-study</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="dot"></span>cs-study</a>
+    <nav class="nav">
+      <a href="../index.html">index</a>
+      <button class="theme-toggle" onclick="toggleTheme()">theme</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">PHASE 1 · NETWORK · WEEK 01</div>
+    <h1>OSI/TCP-IP 계층 모델</h1>
+    <div class="week-meta">
+      <span class="phase-tag network">network</span>
+      <span class="sep"></span><span>완료</span>
+      <span class="sep"></span><span>slug: osi-tcpip</span>
+    </div>
+    <p class="lede">
+      OSI 7계층과 TCP/IP 4계층을 비교하며, 패킷이 어떻게 캡슐화되어 네트워크를 흐르는지 추적한다. "URL 입력 시 일어나는 일"을 계층 관점으로 설명할 수 있게 되는 것이 목표.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>학습 목표</h2>
+    <div class="goals network">
+      <ol>
+        <li>두 모델이 왜 다르게 나뉘었는지 설명</li>
+        <li>"URL 입력 시 일어나는 일"을 7계층 관점으로 추적</li>
+        <li>L4 vs L7 로드밸런서의 차이</li>
+        <li>HTTP/3가 UDP 위에 만들어진 이유</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>핵심 키워드</h2>
+    <ul class="kw-list">
+      <li>OSI 7계층</li><li>TCP/IP 4계층</li><li>캡슐화 (encapsulation)</li>
+      <li>PDU</li><li>L4/L7 로드밸런서</li><li>HTTP/3 (QUIC)</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>딥다이브</h2>
+    <ul>
+      <li><strong>계층별 PDU</strong> — Frame(L2) → Packet(L3) → Segment(L4) → Data(L5–7). 헤더가 쌓이고 벗겨지는 메커니즘.</li>
+      <li><strong>URL 추적 시나리오</strong> — 브라우저에서 URL 입력 → DNS 조회 → TCP 연결 → TLS 핸드셰이크 → HTTP 요청/응답 → 렌더링. 각 계층에서 일어나는 일.</li>
+      <li><strong>L4 vs L7 LB</strong> — L4는 IP/Port 기반, L7은 HTTP 헤더/경로 기반. 처리량과 라우팅 정밀도의 트레이드오프.</li>
+      <li><strong>HTTP/3 = QUIC over UDP</strong> — TCP HoL blocking 문제를 UDP 위에서 신뢰성 직접 구현으로 해결.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>토론 주제</h2>
+    <p class="discuss">OSI 모델은 실무에서 정말 의미가 있는가? TCP/IP 모델로 충분하지 않나?</p>
+  </section>
+
+  <section class="section">
+    <h2>면접 단골 Q&amp;A</h2>
+    <div class="qa">
+      <p class="q">OSI와 TCP/IP 모델의 차이는?</p>
+      <p class="a">OSI는 ISO의 prescriptive 7계층 표준 어휘, TCP/IP는 IETF RFC 1122의 descriptive 4계층 실구현. OSI L5–L7이 TCP/IP의 Application 한 계층에 묶임.</p>
+    </div>
+    <div class="qa">
+      <p class="q">"URL 입력 시 일어나는 일"을 계층 관점으로 설명해 주세요.</p>
+      <p class="a">DNS 조회(L7) → TCP 3-way handshake(L4) → TLS(L5/6) → HTTP 요청(L7) → 라우팅(L3) → MAC 프레임 전송(L2) → 응답 역순.</p>
+    </div>
+    <div class="qa">
+      <p class="q">L4와 L7 로드밸런서의 선택 기준은?</p>
+      <p class="a">처리량·저지연이 우선이면 L4, 경로/헤더 기반 라우팅·SSL 종료·세션 친화가 필요하면 L7.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>참고 자료</h2>
+    <ul>
+      <li>"컴퓨터 네트워킹 하향식 접근" (Kurose) Ch.1</li>
+      <li>cs-obsidian/wiki/topics/week-01-osi-tcpip.md (정착된 합성 노트)</li>
+    </ul>
+  </section>
+
+  <nav class="weeknav">
+    <div class="placeholder"></div>
+    <a class="next" href="week-02.html">
+      <div class="dir">next →</div>
+      <div class="label">Week 02 · TCP, UDP</div>
+    </a>
+  </nav>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>cs-study · Week 01</span>
+    <a href="../index.html">← back to index</a>
+  </div>
+</footer>
+
+</body>
+</html>

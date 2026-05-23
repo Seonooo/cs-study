@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 05 · 웹 인증 — 세션·쿠키·JWT·OAuth2 · cs-study</title>
+<link rel="stylesheet" href="../assets/style.css">
+<script src="../assets/theme.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand"><span class="dot"></span>cs-study</a>
+    <nav class="nav">
+      <a href="../index.html">index</a>
+      <button class="theme-toggle" onclick="toggleTheme()">theme</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="hero">
+    <div class="eyebrow">PHASE 1 · NETWORK · WEEK 05 · 신설</div>
+    <h1>웹 인증 — 세션·쿠키·JWT·OAuth2</h1>
+    <div class="week-meta">
+      <span class="phase-tag network">network</span>
+      <span class="sep"></span><span>신설 주차</span>
+      <span class="sep"></span><span>slug: web-auth-session</span>
+    </div>
+    <p class="lede">
+      세션/쿠키 기반과 토큰 기반(JWT) 인증의 차이를 알고, OAuth2 Authorization Code Flow의 단계를 설명할 수 있어야 한다. CSRF·XSS 방어 패턴까지가 면접 단골 세트.
+    </p>
+  </section>
+
+  <section class="section">
+    <h2>학습 목표</h2>
+    <div class="goals network">
+      <ol>
+        <li>세션 기반 vs 토큰 기반 인증 선택 기준</li>
+        <li>JWT의 장점과 위험 (탈취·만료·블랙리스트)</li>
+        <li>OAuth2 Authorization Code Flow 단계</li>
+        <li>CSRF / XSS 방어 패턴</li>
+        <li>SSO·OIDC 동작 흐름</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>핵심 키워드</h2>
+    <ul class="kw-list">
+      <li>Session vs Cookie</li><li>JWT</li><li>OAuth2 4 grant</li>
+      <li>CSRF / XSS</li><li>SSO</li><li>OpenID Connect</li><li>PKCE</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>딥다이브</h2>
+    <ul>
+      <li><strong>JWT 구조</strong> — <code>header.payload.signature</code>. 서명 검증으로 무결성, payload는 base64url 인코딩(암호화 아님 — 민감정보 금지).</li>
+      <li><strong>JWT 위험</strong> — 탈취 시 만료 전까지 유효. 블랙리스트·짧은 TTL + Refresh Token 회전으로 완화.</li>
+      <li><strong>OAuth2 Authorization Code + PKCE</strong> — 리다이렉트 기반, code_verifier로 공개 클라이언트(SPA/모바일)의 인가 코드 탈취 방어.</li>
+      <li><strong>CSRF 방어</strong> — SameSite 쿠키, CSRF 토큰, Origin/Referer 검증.</li>
+      <li><strong>XSS 방어</strong> — 출력 이스케이프, CSP 헤더, HttpOnly 쿠키로 토큰 저장.</li>
+      <li><strong>OIDC</strong> — OAuth2 위에 ID Token(JWT) 추가 → 인증(authentication)까지 표준화.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <h2>토론 주제</h2>
+    <p class="discuss">세션 기반 vs JWT — 마이크로서비스에서 어느 쪽을 택할 것인가?</p>
+  </section>
+
+  <section class="section">
+    <h2>면접 단골 Q&amp;A</h2>
+    <div class="qa">
+      <p class="q">세션과 쿠키의 차이는?</p>
+      <p class="a">쿠키는 브라우저 저장소·전송 메커니즘. 세션은 서버에 사용자 상태를 저장하고 쿠키로 식별자(Session ID)만 전달하는 인증 패턴.</p>
+    </div>
+    <div class="qa">
+      <p class="q">JWT의 위험과 완화책은?</p>
+      <p class="a">탈취 시 만료 전까지 유효 → 짧은 액세스 토큰 + Refresh Token 회전, 블랙리스트, HttpOnly 쿠키, 서명 알고리즘 검증(특히 <code>none</code> 방어).</p>
+    </div>
+    <div class="qa">
+      <p class="q">CSRF와 XSS는 어떻게 다른가?</p>
+      <p class="a">CSRF는 사용자가 인증된 상태에서 의도치 않은 요청 강제 → SameSite·CSRF 토큰. XSS는 스크립트 주입 → 출력 이스케이프·CSP.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>참고 자료</h2>
+    <ul>
+      <li>RFC 6749 (OAuth 2.0), RFC 7636 (PKCE), RFC 7519 (JWT)</li>
+      <li>Auth0 가이드 — OAuth2/OIDC 흐름 다이어그램</li>
+      <li>OWASP Cheat Sheet — CSRF / XSS / Session Management</li>
+    </ul>
+  </section>
+
+  <nav class="weeknav">
+    <a class="prev" href="week-04.html">
+      <div class="dir">← prev</div>
+      <div class="label">Week 04 · DNS, LB, CDN</div>
+    </a>
+    <a class="next" href="week-06.html">
+      <div class="dir">next →</div>
+      <div class="label">Week 06 · 프로세스와 스레드</div>
+    </a>
+  </nav>
+
+</div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>cs-study · Week 05</span>
+    <a href="../index.html">← back to index</a>
+  </div>
+</footer>
+
+</body>
+</html>
