@@ -78,24 +78,66 @@
     },
     {
       "week": 5,
-      "slug": "process-thread",
-      "phase": "os",
-      "topic": "프로세스와 스레드",
+      "slug": "web-auth-session",
+      "phase": "network",
+      "topic": "웹 인증 — 세션·쿠키·JWT·OAuth2",
       "keywords": [
-        "PCB / 컨텍스트 스위칭",
-        "Goroutine M:N",
-        "Java Virtual Thread",
-        "동시성 vs 병렬성"
+        "Session vs Cookie",
+        "JWT 구조 (header.payload.signature)",
+        "OAuth2 4가지 grant",
+        "CSRF / XSS",
+        "SSO / OpenID Connect"
       ],
       "goals": [
-        "프로세스 vs 스레드 자원 공유 관점",
-        "컨텍스트 스위칭 비용 구성",
-        "멀티프로세스 / 멀티스레드 / 비동기 I/O 선택",
-        "코루틴·가상스레드 효율 원리"
+        "세션 기반 vs 토큰 기반 인증 선택 기준",
+        "JWT의 장점과 위험 (탈취·만료·블랙리스트)",
+        "OAuth2 Authorization Code Flow 단계",
+        "CSRF / XSS 방어 패턴",
+        "SSO·OIDC 동작 흐름"
       ]
     },
     {
       "week": 6,
+      "slug": "process-thread",
+      "phase": "os",
+      "topic": "프로세스와 스레드, 스케줄링",
+      "keywords": [
+        "PCB / TCB",
+        "컨텍스트 스위칭 비용",
+        "스케줄링 알고리즘 (FCFS, SJF, RR, MLFQ)",
+        "리눅스 CFS",
+        "프로세스간 통신 (IPC)"
+      ],
+      "goals": [
+        "프로세스 vs 스레드 자원 공유 관점",
+        "컨텍스트 스위칭 비용 구성",
+        "스케줄링 알고리즘 비교",
+        "리눅스 CFS 동작 원리",
+        "IPC 방식별 선택 기준"
+      ]
+    },
+    {
+      "week": 7,
+      "slug": "virtual-thread-coroutine",
+      "phase": "os",
+      "topic": "가상 스레드·코루틴·동시성 모델",
+      "keywords": [
+        "Java Virtual Thread (Project Loom)",
+        "Goroutine M:N",
+        "Kotlin Coroutine",
+        "Reactive / async I/O",
+        "Thread-per-request 한계"
+      ],
+      "goals": [
+        "Thread-per-request 모델의 한계",
+        "Virtual Thread가 OS 스레드 비용을 줄이는 메커니즘",
+        "Goroutine M:N 스케줄링",
+        "Coroutine vs Virtual Thread 차이",
+        "멀티프로세스 / 멀티스레드 / 비동기 I/O / 가상스레드 선택"
+      ]
+    },
+    {
+      "week": 8,
       "slug": "sync-deadlock",
       "phase": "os",
       "topic": "동기화와 데드락",
@@ -115,30 +157,30 @@
       ]
     },
     {
-      "week": 7,
-      "slug": "memory",
+      "week": 9,
+      "slug": "memory-gc",
       "phase": "os",
-      "topic": "메모리 관리",
+      "topic": "메모리 관리와 GC",
       "keywords": [
         "가상 메모리 / 페이징",
         "TLB miss / Page Fault",
         "캐시 친화적 코드",
-        "mmap",
-        "ZGC / Shenandoah"
+        "JVM 메모리 영역",
+        "ZGC / Shenandoah / G1"
       ],
       "goals": [
         "가상 메모리 목적과 페이징 동작",
         "TLB miss vs Page Fault 비용 계층",
         "캐시 친화적 코드 작성 원칙",
-        "mmap 적용 사례",
-        "GC 진화 (G1 → ZGC)"
+        "JVM 메모리 영역과 GC 알고리즘 진화 (Serial → G1 → ZGC)",
+        "Stop-the-world 시간이 짧아진 메커니즘"
       ]
     },
     {
-      "week": 8,
-      "slug": "filesystem-io",
+      "week": 10,
+      "slug": "io-models",
       "phase": "os",
-      "topic": "파일 시스템과 I/O",
+      "topic": "파일 시스템과 I/O 모델",
       "keywords": [
         "sync/async vs blocking/non-blocking",
         "select / poll / epoll",
@@ -155,7 +197,7 @@
       ]
     },
     {
-      "week": 9,
+      "week": 11,
       "slug": "relational-normalization",
       "phase": "database",
       "topic": "관계형 모델과 정규화",
@@ -173,27 +215,47 @@
       ]
     },
     {
-      "week": 10,
-      "slug": "index-query",
+      "week": 12,
+      "slug": "index-bptree",
       "phase": "database",
-      "topic": "인덱스와 쿼리 최적화",
+      "topic": "인덱스와 B+Tree",
       "keywords": [
         "B-Tree vs B+Tree",
         "Clustered / Non-clustered",
-        "복합 인덱스",
+        "복합 인덱스 컬럼 순서",
         "커버링 인덱스",
-        "EXPLAIN"
+        "해시 인덱스"
       ],
       "goals": [
         "DB가 B+Tree를 쓰는 이유",
-        "InnoDB PK 설계 가이드",
+        "InnoDB PK 설계 가이드 (클러스터드 영향)",
         "복합 인덱스 컬럼 순서 결정",
         "커버링 인덱스로 쿼리 최적화",
-        "EXPLAIN으로 인덱스 미사용 진단"
+        "B+Tree와 해시 인덱스의 트레이드오프"
       ]
     },
     {
-      "week": 11,
+      "week": 13,
+      "slug": "query-optimization",
+      "phase": "database",
+      "topic": "쿼리 최적화와 EXPLAIN",
+      "keywords": [
+        "EXPLAIN / EXPLAIN ANALYZE",
+        "옵티마이저 통계",
+        "인덱스 미사용 케이스",
+        "Slow query 진단",
+        "조인 알고리즘 (NL / Hash / Merge)"
+      ],
+      "goals": [
+        "EXPLAIN 결과 읽고 병목 파악",
+        "옵티마이저가 인덱스를 안 타는 케이스 진단",
+        "조인 알고리즘별 선택 기준",
+        "Slow query log 활용",
+        "쿼리 리라이팅 전략"
+      ]
+    },
+    {
+      "week": 14,
       "slug": "transaction-isolation",
       "phase": "database",
       "topic": "트랜잭션과 격리 수준",
@@ -213,7 +275,7 @@
       ]
     },
     {
-      "week": 12,
+      "week": 15,
       "slug": "nosql-distributed",
       "phase": "database",
       "topic": "NoSQL, 분산 데이터베이스",
@@ -230,6 +292,106 @@
         "복제 방식 트레이드오프",
         "Eventual Consistency와 Quorum",
         "Saga 패턴과 Outbox"
+      ]
+    },
+    {
+      "week": 16,
+      "slug": "spring-ioc-di",
+      "phase": "framework",
+      "topic": "Spring IoC·DI·Bean",
+      "keywords": [
+        "IoC Container (BeanFactory, ApplicationContext)",
+        "의존성 주입 3방식 (Constructor / Setter / Field)",
+        "Bean 생명주기",
+        "Bean Scope (Singleton, Prototype, Request, Session)",
+        "순환 의존성"
+      ],
+      "goals": [
+        "IoC와 DI 개념과 도입 이유",
+        "생성자 주입이 권장되는 이유",
+        "Bean 생명주기 단계와 콜백 (@PostConstruct, @PreDestroy)",
+        "Singleton vs Prototype 선택",
+        "순환 의존성 발생 원인과 해결"
+      ]
+    },
+    {
+      "week": 17,
+      "slug": "spring-mvc-aop",
+      "phase": "framework",
+      "topic": "Spring MVC·AOP·Filter/Interceptor",
+      "keywords": [
+        "DispatcherServlet (Front Controller)",
+        "HandlerMapping / ViewResolver",
+        "AOP (Aspect, Advice, Pointcut, JoinPoint)",
+        "Proxy (JDK vs CGLIB)",
+        "Filter vs Interceptor vs AOP"
+      ],
+      "goals": [
+        "DispatcherServlet 요청 처리 흐름",
+        "AOP 핵심 용어와 동작 원리",
+        "JDK Proxy vs CGLIB 차이",
+        "Filter / Interceptor / AOP 적용 시점 비교",
+        "@RestController vs @Controller"
+      ]
+    },
+    {
+      "week": 18,
+      "slug": "jpa-persistence",
+      "phase": "framework",
+      "topic": "JPA — 영속성 컨텍스트와 N+1",
+      "keywords": [
+        "영속성 컨텍스트 5가지 이점",
+        "엔티티 생명주기 (transient / persistent / detached / removed)",
+        "더티 체킹",
+        "N+1 문제 / Fetch Join",
+        "LazyInitializationException"
+      ],
+      "goals": [
+        "영속성 컨텍스트가 주는 5가지 이점",
+        "엔티티 생명주기 상태 전이",
+        "더티 체킹 동작 원리",
+        "N+1 문제 발생 시점과 해결책 (Fetch Join, @EntityGraph, batch size)",
+        "LazyInitializationException 발생 조건과 회피"
+      ]
+    },
+    {
+      "week": 19,
+      "slug": "spring-boot-tx",
+      "phase": "framework",
+      "topic": "Spring Boot — Auto-config·@Transactional·Actuator",
+      "keywords": [
+        "@SpringBootApplication 내부 동작",
+        "Auto-configuration / @Conditional",
+        "@Transactional 프록시 함정",
+        "트랜잭션 전파 (Propagation)",
+        "Actuator"
+      ],
+      "goals": [
+        "@SpringBootApplication 의 3 어노테이션 분해",
+        "Auto-configuration 디버깅 (--debug, AutoConfigurationReport)",
+        "@Transactional 이 안 먹는 케이스 (self-invocation, private, checked exception)",
+        "트랜잭션 전파 속성과 적용 사례",
+        "Actuator 엔드포인트로 운영 가시성 확보"
+      ]
+    },
+    {
+      "week": 20,
+      "slug": "devops-observability",
+      "phase": "ops",
+      "topic": "CI/CD·Docker·옵저버빌리티·시스템디자인 베이직",
+      "keywords": [
+        "CI/CD 파이프라인",
+        "Docker / 컨테이너",
+        "Logs / Metrics / Traces",
+        "캐싱·메시지 큐·수평 확장",
+        "10x 트래픽 설계"
+      ],
+      "goals": [
+        "커밋부터 프로덕션까지 CI/CD 흐름",
+        "Docker가 VM과 다른 점, 이미지 레이어",
+        "옵저버빌리티 3 시그널 (logs / metrics / traces)과 correlation ID",
+        "캐시·MQ·수평확장으로 10배 트래픽 흡수 설계",
+        "프로덕션 장애 대응 (탐지 → 완화 → RCA → 재발 방지)"
       ]
     }
   ]

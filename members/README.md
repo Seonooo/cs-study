@@ -47,5 +47,6 @@ week11-transaction-isolation.md
 |------|------|
 | 빈 템플릿 (복사 시작점) | [`template.md`](template.md) |
 | 채워진 예시 (분량·스타일 기준) | [`example.md`](example.md) |
-| 주차별 학습 목표·꼬리 질문 | `../network/`, `../os/`, `../database/` 의 각 주차 README |
+| 주차별 학습 목표·키워드·면접 Q&A | [`../cs-study-curriculum.md`](../cs-study-curriculum.md) 의 해당 Week 섹션 |
 | 전체 운영 방식·일정 | [`../README.md`](../README.md) |
+| 재구성 근거·면접 우선순위 | `cs-obsidian/wiki/topics/curriculum-redesign-2026.md` |
