@@ -83,10 +83,12 @@ jobs:
 
           # Phase 별 색상 매핑
           case "$PHASE" in
-            network)  COLOR=5814783 ;;   # 파랑
-            os)       COLOR=5763719 ;;   # 초록
-            database) COLOR=10181046 ;;  # 보라
-            *)        COLOR=0 ;;
+            network)   COLOR=5814783 ;;   # 파랑
+            os)        COLOR=5763719 ;;   # 초록
+            database)  COLOR=10181046 ;;  # 보라
+            framework) COLOR=15844367 ;;  # 노랑 (Spring 그린 톤)
+            ops)       COLOR=15548997 ;;  # 빨강 (운영·인시던트)
+            *)         COLOR=0 ;;
           esac
 
           # 발표자 자동 로테이션 ($MEMBERS_FILE 순환)
@@ -94,19 +96,23 @@ jobs:
           PRESENTER_IDX=$(( (WEEK_INT - 1) % MEMBER_COUNT ))
           PRESENTER_NAME=$(jq -r ".members[$PRESENTER_IDX].name" "$MEMBERS_FILE")
 
-          # 주차 README URL
-          README_URL="https://github.com/${{ github.repository }}/blob/main/$PHASE/week${WEEK_PAD}-${SLUG}/README.md"
+          # 주차 HTML 문서 URL (GitHub Pages 배포본)
+          # GITHUB_REPOSITORY = "Owner/repo" → owner 는 소문자로 변환해야 Pages 호스트와 일치
+          OWNER_LC=$(echo "${GITHUB_REPOSITORY%%/*}" | tr '[:upper:]' '[:lower:]')
+          REPO_NAME="${GITHUB_REPOSITORY##*/}"
+          DOC_URL="https://${OWNER_LC}.github.io/${REPO_NAME}/weeks/week-${WEEK_PAD}.html"
 
           # 페이로드 빌드 (jq 필터 사용)
           jq -n -f templates/discord-embed.jq \
              --arg week_num "$WEEK_PAD" \
              --arg week_num_raw "$WEEK_INT" \
+             --arg week_total "20" \
              --arg topic "$TOPIC" \
              --arg slug "$SLUG" \
              --arg keywords "$KEYWORDS" \
              --arg goals "$GOALS" \
              --arg presenter "@$PRESENTER_NAME" \
-             --arg readme_url "$README_URL" \
+             --arg doc_url "$DOC_URL" \
              --argjson color $COLOR \
              > /tmp/payload.json
 
